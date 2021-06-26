@@ -11,7 +11,7 @@ class CatsBloc extends Bloc<CatsEvent, CatsState> {
 
   @override
   Stream<CatsState> mapEventToState(CatsEvent event) async*{
-    if (event is LoadCatsEvent) {
+    if (event is LoadCatsEvent || event is PullToRefreshEvent) {
       yield LoadingCatsState();
 
       try{

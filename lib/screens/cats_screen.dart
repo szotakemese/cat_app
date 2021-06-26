@@ -1,4 +1,5 @@
 import 'package:cat_app/bloc/cats_bloc.dart';
+import 'package:cat_app/bloc/cats_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -54,7 +55,10 @@ class CatsScreen extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (state is LoadedCatsState) {
-          return CatsList(state);
+          return RefreshIndicator(
+            child: CatsList(state),
+            onRefresh: () async => BlocProvider.of<CatsBloc>(context).add(PullToRefreshEvent()),
+          );
         } else if (state is FailedLoadCatsState) {
           return Padding(
             padding: const EdgeInsets.all(30.0),
