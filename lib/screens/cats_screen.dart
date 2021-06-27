@@ -3,9 +3,7 @@ import 'package:cat_app/bloc/cats_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// import '../bloc/cats_cubit.dart';
 import '../bloc/cats_state.dart';
-// import '../models/cat.dart';
 import '../widgets/cats_list.dart';
 
 class CatsScreen extends StatelessWidget {
@@ -15,40 +13,6 @@ class CatsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Cats'),
       ),
-      // body: BlocBuilder<CatsCubit, List<Cat>>(
-      //   builder: (context, cats) {
-      //     if (cats.isEmpty) {
-      //       return Center(
-      //         child: CircularProgressIndicator(),
-      //       );
-      //     }
-      //     return ListView.builder(
-      //       itemCount: cats.length,
-      //       itemBuilder: (context, index) {
-      //         return Card(
-      //           child: Padding(
-      //             padding: const EdgeInsets.symmetric(vertical: 15.0),
-      //             child: ListTile(
-      //               leading: Container(
-      //                 width: 60,
-      //                 decoration: BoxDecoration(
-      //                   image: DecorationImage(
-      //                     fit: BoxFit.cover,
-      //                     image: NetworkImage(cats[index].url),
-      //                   ),
-      //                 ),
-      //               ),
-      //               title: Text(cats[index].id),
-      //               trailing: IconButton(
-      //                 icon: Icon(Icons.favorite_border),
-      //                 onPressed: () {},
-      //               ),
-      //             ),
-      //           ),
-      //         );
-      //       },
-      //     );
-      //  },
       body: BlocBuilder<CatsBloc, CatsState>(builder: (context, state) {
         if (state is LoadingCatsState) {
           return Center(

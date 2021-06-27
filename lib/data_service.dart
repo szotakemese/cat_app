@@ -8,8 +8,6 @@ class DataService {
   final myUrl = 'https://api.thecatapi.com/v1/images/search?limit=100';
 
   Future<List<Cat>> getCats() async {
-    //final uri = Uri.https('api.thecatapi.com', '/v1/images/search');
-     //final response = await http.get(uri);
     try{
       final response = await http.get(
       Uri.parse(myUrl),

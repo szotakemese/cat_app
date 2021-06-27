@@ -1,4 +1,7 @@
+import 'package:cat_app/bloc/nav_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 class CatsList extends StatelessWidget {
   final state;
   const CatsList(this.state);
@@ -12,13 +15,13 @@ class CatsList extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 15.0),
             child: ListTile(
+              onTap: () => BlocProvider.of<NavCubit>(context)
+                  .showCatDetails(state.cats[index]),
               leading: Container(
                 width: 60,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(state.cats[index].url),
-                  ),
+                child: Hero(
+                  tag: state.cats[index].id,
+                  child: Image.network(state.cats[index].url, fit: BoxFit.cover,),
                 ),
               ),
               title: Text(state.cats[index].id),
