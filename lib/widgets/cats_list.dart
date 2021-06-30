@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/navigation/nav_cubit.dart';
+import '../blocs/navigation/nav_cubit.dart';
 
 class CatsList extends StatelessWidget {
   final state;
   const CatsList(this.state);
-
   @override
   Widget build(BuildContext context) {
     return state.cats.length == 0

@@ -1,0 +1,16 @@
+name: cat_app_core
+
+environment:
+  sdk: '>=2.0.0-dev.28.0 <3.0.0'
+
+dependencies:
+  intl:
+  flutter:
+    sdk: flutter
+  path_provider:
+
+dev_dependencies:
+  intl_translation:
+
+flutter:
+  uses-material-design: true

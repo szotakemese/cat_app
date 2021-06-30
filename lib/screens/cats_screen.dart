@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/cats_list/all_cats_bloc.dart';
-import '../bloc/cats_list/cats_event.dart';
-
-import '../bloc/cats_list/cats_state.dart';
+import '../blocs/cats_list/cats_list.dart';
 import '../widgets/cats_list.dart';
 
 class CatsScreen extends StatelessWidget {
