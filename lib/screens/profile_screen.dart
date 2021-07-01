@@ -1,14 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:cat_app/auth/auth.dart';
+import 'package:cat_app/widgets/widgets.dart';
 
 class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({Key? key}) : super(key: key);
+
+  static Page page() => const MaterialPage<void>(child: ProfileScreen());
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold( 
+    final textTheme = Theme.of(context).textTheme;
+    final user = context.select((AuthBloc bloc) => bloc.state.user);
+    return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text('Profile'),
+        actions: <Widget>[
+          IconButton(
+            key: const Key('homePage_logout_iconButton'),
+            icon: const Icon(Icons.exit_to_app),
+            onPressed: () => context.read<AuthBloc>().add(AuthLogoutRequested()),
+          )
+        ],
       ),
-      body: Center(
-        child: Text('Profile Screen'),
+      body: Align(
+        alignment: const Alignment(0, -1 / 3),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Avatar(photo: user.photo),
+            const SizedBox(height: 4.0),
+            Text(user.email ?? '', style: textTheme.headline6),
+            const SizedBox(height: 4.0),
+            Text(user.name ?? '', style: textTheme.headline5),
+          ],
+        ),
       ),
     );
   }

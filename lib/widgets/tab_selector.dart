@@ -18,6 +18,9 @@ class TabSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+
+      unselectedItemColor: Theme.of(context).accentColor,
+      selectedItemColor: Theme.of(context).primaryColor,
       key: ArchSampleKeys.tabs,
       currentIndex: AppTab.values.indexOf(activeTab),
       onTap: (index) => onTabSelected(AppTab.values[index]),

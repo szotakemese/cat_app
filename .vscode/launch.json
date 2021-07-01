@@ -8,7 +8,10 @@
             "name": "cat_app",
             "request": "launch",
             "type": "dart",
-            "program": "lib/main.dart"
+            "program": "lib/main.dart",
+            "args": [
+                "--no-sound-null-safety"
+            ]
         },
         {
             "name": "cat_app (profile mode)",
