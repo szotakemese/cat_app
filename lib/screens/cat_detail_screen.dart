@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../models/cat.dart';
+import '../blocs/cat_facts/cat_facts.dart';
+
+import '../models/models.dart';
+import '../widgets/widgets.dart';
 
 class CatDetailScreen extends StatelessWidget {
   final Cat cat;
@@ -23,11 +27,28 @@ class CatDetailScreen extends StatelessWidget {
                   fit: BoxFit.fitWidth,
                 )),
             Container(
-              alignment: Alignment.bottomCenter,
-              child: Text(
-                'CAT\'S DETAILS...',
-                style: TextStyle(fontSize: 20),
-              ),
+              child: BlocBuilder<CatFactsBloc, CatFactsState>(
+                  builder: (context, state) {
+                if (state is LoadingCatFactsState) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (state is LoadedCatFactsState) {
+                  return CatFactWidget(state);
+                } else if (state is FailedLoadCatFactsState) {
+                  return Padding(
+                    padding: const EdgeInsets.all(30.0),
+                    child: Center(
+                      child: Text(
+                        'Error occured: ${state.error}',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                  );
+                } else {
+                  return Container();
+                }
+              }),
             ),
           ],
         ),

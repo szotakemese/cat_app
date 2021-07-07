@@ -23,8 +23,11 @@ class AppNavigator extends StatelessWidget {
               ? BlocBuilder<NavCubit, Cat?>(builder: (context, cat) {
                   _appPages = [MaterialPage(child: CatsScreen())];
                   if (cat != null)
-                    _appPages
-                        .add(MaterialPage(child: CatDetailScreen(cat: cat)));
+                    _appPages.add(
+                      MaterialPage(
+                        child: CatDetailScreen(cat: cat),
+                      ),
+                    );
                   return Navigator(
                     pages: _appPages,
                     onPopPage: (route, result) {

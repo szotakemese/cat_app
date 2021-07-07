@@ -15,13 +15,6 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
-        actions: <Widget>[
-          IconButton(
-            key: const Key('homePage_logout_iconButton'),
-            icon: const Icon(Icons.exit_to_app),
-            onPressed: () => context.read<AuthBloc>().add(AuthLogoutRequested()),
-          )
-        ],
       ),
       body: Align(
         alignment: const Alignment(0, -1 / 3),
@@ -33,6 +26,23 @@ class ProfileScreen extends StatelessWidget {
             Text(user.email ?? '', style: textTheme.headline6),
             const SizedBox(height: 4.0),
             Text(user.name ?? '', style: textTheme.headline5),
+            const SizedBox(height: 4.0),
+            ElevatedButton.icon(
+              key: const Key('homePage_logout_iconButton'),
+              label: const Text(
+                'LOGOUT',
+                style: TextStyle(color: Colors.white),
+              ),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                primary: Theme.of(context).accentColor,
+              ),
+              icon: const Icon(Icons.exit_to_app, color: Colors.white),
+              onPressed: () =>
+                  context.read<AuthBloc>().add(AuthLogoutRequested()),
+            ),
           ],
         ),
       ),

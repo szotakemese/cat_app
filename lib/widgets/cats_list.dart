@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../blocs/navigation/nav_cubit.dart';
+import '../blocs/blocs.dart';
 
 class CatsList extends StatelessWidget {
   final state;
@@ -19,8 +19,12 @@ class CatsList extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
                   child: ListTile(
-                    onTap: () => BlocProvider.of<NavCubit>(context)
-                        .showCatDetails(state.cats[index]),
+                    onTap: () {
+                      BlocProvider.of<NavCubit>(context)
+                          .showCatDetails(state.cats[index]);
+                      BlocProvider.of<CatFactsBloc>(context)
+                        .add(LoadCatFactsEvent());
+                    },
                     leading: Container(
                       width: 60,
                       child: Hero(

@@ -65,6 +65,9 @@ class CatsApp extends StatelessWidget {
               ),
               BlocProvider(
                 create: (_) => FavCatsBloc()..add(LoadCatsEvent()),
+              ),
+              BlocProvider(
+                create: (_) => CatFactsBloc()..add(LoadCatFactsEvent()),
               )
             ],
             child: AppNavigator(),

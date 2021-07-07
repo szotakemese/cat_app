@@ -2,6 +2,7 @@ part of 'auth_bloc.dart';
 
 enum AuthStatus {
   authenticated,
+  waiting,
   unauthenticated,
 }
 
