@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../blocs/blocs.dart';
+import 'cats_list_item.dart';
 
 class CatsList extends StatelessWidget {
   final state;
@@ -15,34 +13,7 @@ class CatsList extends StatelessWidget {
         : ListView.builder(
             itemCount: state.cats.length,
             itemBuilder: (context, index) {
-              return Card(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 15.0),
-                  child: ListTile(
-                    onTap: () {
-                      BlocProvider.of<NavCubit>(context)
-                          .showCatDetails(state.cats[index]);
-                      BlocProvider.of<CatFactsBloc>(context)
-                        .add(LoadCatFactsEvent());
-                    },
-                    leading: Container(
-                      width: 60,
-                      child: Hero(
-                        tag: state.cats[index].id,
-                        child: Image.network(
-                          state.cats[index].url,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    title: Text(state.cats[index].id),
-                    trailing: IconButton(
-                      icon: Icon(Icons.favorite_border),
-                      onPressed: () {},
-                    ),
-                  ),
-                ),
-              );
+              return CatsListItem(state: state, index: index,);
             },
           );
   }

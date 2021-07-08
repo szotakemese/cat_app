@@ -6,8 +6,13 @@ class Cat {
     required this.url,
   });
 
-  factory Cat.fromJson(Map<String, dynamic> json) => Cat(
+  factory Cat.allCatFromJson(Map<String, dynamic> json) => Cat(
         id: json['id'],
         url: json['url'],
+      );
+
+  factory Cat.favCatFromJson(Map<String, dynamic> json) => Cat(
+        id: json['image']['id'],
+        url: json['image']['url'],
       );
 }
