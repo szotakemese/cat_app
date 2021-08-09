@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../blocs/cat_facts/cat_facts.dart';
 
+import 'package:cat_app/blocs/blocs.dart';
 import '../models/models.dart';
 import '../widgets/widgets.dart';
 
@@ -50,6 +51,21 @@ class CatDetailScreen extends StatelessWidget {
                 }
               }),
             ),
+            IconButton(
+            icon:
+                cat.isFav ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
+            color: Colors.redAccent,
+            onPressed: () {
+
+            print('STATUS FOR ${cat.id} was ${cat.isFav}');
+              BlocProvider.of<AllCatsListBloc>(context).add(
+                CatUpdated(
+                  Cat(id: cat.id, url: cat.url, isFav: !cat.isFav),
+                ),
+              );
+            print('STATUS FOR ${cat.id} after tap ${cat.isFav}');
+            },
+          ),
           ],
         ),
       ),

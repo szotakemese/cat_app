@@ -37,6 +37,7 @@ class ProfileScreen extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),
                 ),
+                padding: const EdgeInsets.symmetric(horizontal: 15),
                 primary: Theme.of(context).accentColor,
               ),
               icon: const Icon(Icons.exit_to_app, color: Colors.white),

@@ -12,12 +12,12 @@ class CatsScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () async =>
-                BlocProvider.of<AllCatsBloc>(context).add(PullToRefreshEvent()),
+                BlocProvider.of<AllCatsListBloc>(context).add(RefreshAllCatsEvent()),
             icon: Icon(Icons.refresh),
           )
         ],
       ),
-      body: BlocBuilder<AllCatsBloc, CatsState>(builder: (context, state) {
+      body: BlocBuilder<AllCatsListBloc, CatsState>(builder: (context, state) {
         if (state is LoadingCatsState) {
           return Center(
             child: CircularProgressIndicator(),
@@ -29,7 +29,7 @@ class CatsScreen extends StatelessWidget {
             padding: const EdgeInsets.all(30.0),
             child: Center(
               child: Text(
-                'Error occured ${state.error}',
+                'Error occured: ${state.error}',
                 style: TextStyle(fontSize: 18),
               ),
             ),

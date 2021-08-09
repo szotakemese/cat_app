@@ -8,7 +8,7 @@ class CatsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return state.cats.length == 0
         ? Center(
-            child: Text('Favourite Cats List is empty'),
+            child: Text('Cats List is empty'),
           )
         : ListView.builder(
             itemCount: state.cats.length,

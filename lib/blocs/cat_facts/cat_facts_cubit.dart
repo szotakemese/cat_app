@@ -1,7 +1,7 @@
-import '../../data_service.dart';
+import 'package:cat_app/data_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../models/models.dart';
+import 'package:cat_app/models/models.dart';
 
 class CatFactsCubit extends Cubit<CatFact?> {
   final _dataService = DataService();

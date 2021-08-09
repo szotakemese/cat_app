@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data_service.dart';
+import 'package:cat_app/data_service.dart';
 import 'cat_facts_event.dart';
 import 'cat_facts_state.dart';
 

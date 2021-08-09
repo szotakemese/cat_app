@@ -61,14 +61,14 @@ class CatsApp extends StatelessWidget {
                 create: (context) => TabBloc(),
               ),
               BlocProvider(
-                create: (_) => AllCatsBloc()..add(LoadCatsEvent()),
+                create: (_) => AllCatsListBloc()..add(LoadAllCatsEvent()),
               ),
               BlocProvider(
-                create: (_) => FavCatsBloc()..add(LoadCatsEvent()),
+                create: (_) => FavCatsListBloc()..add(LoadFavCatsEvent()),
               ),
               BlocProvider(
                 create: (_) => CatFactsBloc()..add(LoadCatFactsEvent()),
-              )
+              ),
             ],
             child: AppNavigator(),
           );

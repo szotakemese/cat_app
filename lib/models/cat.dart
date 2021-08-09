@@ -1,9 +1,11 @@
 class Cat {
   final String id;
   final String url;
+  bool isFav;
   Cat({
     required this.id,
     required this.url,
+    this.isFav = false,
   });
 
   factory Cat.allCatFromJson(Map<String, dynamic> json) => Cat(
@@ -13,6 +15,6 @@ class Cat {
 
   factory Cat.favCatFromJson(Map<String, dynamic> json) => Cat(
         id: json['image']['id'],
-        url: json['image']['url'],
+        url: json['image']['url']
       );
 }

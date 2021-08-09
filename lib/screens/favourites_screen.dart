@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../blocs/cats_list/cats_list.dart';
-import '../widgets/cats_list.dart';
+import 'package:cat_app/blocs/cats_list/cats_list.dart';
+import 'package:cat_app/widgets/cats_list.dart';
 
 class FavouritesScreen extends StatelessWidget {
   @override
@@ -13,12 +13,12 @@ class FavouritesScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () async =>
-                BlocProvider.of<FavCatsBloc>(context).add(PullToRefreshEvent()),
+                BlocProvider.of<FavCatsListBloc>(context).add(RefreshFavCatsEvent()),
             icon: Icon(Icons.refresh),
           )
         ],
       ),
-      body: BlocBuilder<FavCatsBloc, CatsState>(builder: (context, state) {
+      body: BlocBuilder<FavCatsListBloc, CatsState>(builder: (context, state) {
         if (state is LoadingCatsState) {
           return Center(
             child: CircularProgressIndicator(),
