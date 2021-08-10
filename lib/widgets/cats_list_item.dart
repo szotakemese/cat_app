@@ -43,44 +43,33 @@ class CatsListItem extends StatelessWidget {
             ),
           ),
           title: Text(state.cats[index].id),
-          trailing: SizedBox(
-            width: 100,
-            child: Row(
-              children: [
-                IconButton(
-                  icon: Icon(Icons.delete),
-                  color: Colors.redAccent,
-                  onPressed: () {
-                    print(
-                        '==============DELETE FROM FAVOURITES===============');
-                    print('ID: ${cat.id}');
-                    _dataService.deleteFav(
-                      cat.id,
-                    );
-                  },
+          trailing: IconButton(
+            icon:
+                cat.isFav ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
+            color: cat.isFav ? Colors.redAccent : Colors.grey,
+            onPressed: () {
+              if (!cat.isFav) {
+                print('==============ADD TO FAVOURITES===============');
+                _dataService.setFav(
+                  state.cats[index].id,
+                  user.id,
+                );
+              } else {
+                print('==============DELETE FROM FAVOURITES===============');
+                print('ID: ${cat.id}');
+                _dataService.deleteFav(
+                  cat.id,
+                );
+              }
+
+              print(
+                  'STATUS FOR ${state.cats[index].id} was ${state.cats[index].isFav}');
+              BlocProvider.of<AllCatsListBloc>(context).add(
+                CatUpdated(
+                  Cat(id: cat.id, url: cat.url, isFav: !cat.isFav),
                 ),
-                IconButton(
-                  icon: cat.isFav
-                      ? Icon(Icons.favorite)
-                      : Icon(Icons.favorite_border),
-                  color: Colors.redAccent,
-                  onPressed: () {
-                    print('==============ADD TO FAVOURITES===============');
-                    _dataService.setFav(
-                      state.cats[index].id,
-                      user.id,
-                    );
-                    print(
-                        'STATUS FOR ${state.cats[index].id} was ${state.cats[index].isFav}');
-                    BlocProvider.of<AllCatsListBloc>(context).add(
-                      CatUpdated(
-                        Cat(id: cat.id, url: cat.url, isFav: !cat.isFav),
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
+              );
+            },
           ),
         ),
       ),
