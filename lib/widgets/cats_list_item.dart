@@ -22,6 +22,7 @@ class CatsListItem extends StatelessWidget {
     final _dataService = DataService();
     final cat = state.cats.firstWhere((cat) => cat.id == state.cats[index].id,
         orElse: () => null);
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 15.0),
@@ -51,7 +52,7 @@ class CatsListItem extends StatelessWidget {
               if (!cat.isFav) {
                 print('==============ADD TO FAVOURITES===============');
                 _dataService.setFav(
-                  state.cats[index].id,
+                  cat.id,
                   user.id,
                 );
               } else {
@@ -62,8 +63,7 @@ class CatsListItem extends StatelessWidget {
                 );
               }
 
-              print(
-                  'STATUS FOR ${state.cats[index].id} was ${state.cats[index].isFav}');
+              print('STATUS FOR ${cat.id} was ${cat.isFav}');
               BlocProvider.of<AllCatsListBloc>(context).add(
                 CatUpdated(
                   Cat(id: cat.id, url: cat.url, isFav: !cat.isFav),

@@ -15,6 +15,7 @@ class Cat {
 
   factory Cat.favCatFromJson(Map<String, dynamic> json) => Cat(
         id: json['image']['id'],
-        url: json['image']['url']
+        url: json['image']['url'],
+        isFav: true,
       );
 }

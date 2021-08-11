@@ -3,9 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../blocs/cat_facts/cat_facts.dart';
 
-import 'package:cat_app/blocs/blocs.dart';
+import '../blocs/blocs.dart';
 import '../models/models.dart';
 import '../widgets/widgets.dart';
+
+import 'package:cat_app/auth/auth.dart';
+import 'package:cat_app/data_service.dart';
 
 class CatDetailScreen extends StatelessWidget {
   final Cat cat;
@@ -14,6 +17,8 @@ class CatDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = context.select((AuthBloc bloc) => bloc.state.user);
+    final _dataService = DataService();
     return Scaffold(
       appBar: AppBar(
         title: Text('ID: ' + cat.id),
@@ -54,16 +59,29 @@ class CatDetailScreen extends StatelessWidget {
             IconButton(
             icon:
                 cat.isFav ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
-            color: Colors.redAccent,
+            color: cat.isFav ? Colors.redAccent : Colors.grey,
             onPressed: () {
+              if (!cat.isFav) {
+                print('==============ADD TO FAVOURITES===============');
+                _dataService.setFav(
+                  cat.id,
+                  user.id,
+                );
+              } else {
+                print('==============DELETE FROM FAVOURITES===============');
+                print('ID: ${cat.id}');
+                _dataService.deleteFav(
+                  cat.id,
+                );
+              }
 
-            print('STATUS FOR ${cat.id} was ${cat.isFav}');
+              print(
+                  'STATUS FOR ${cat.id} was ${cat.isFav}');
               BlocProvider.of<AllCatsListBloc>(context).add(
                 CatUpdated(
                   Cat(id: cat.id, url: cat.url, isFav: !cat.isFav),
                 ),
               );
-            print('STATUS FOR ${cat.id} after tap ${cat.isFav}');
             },
           ),
           ],

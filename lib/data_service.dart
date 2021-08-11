@@ -18,7 +18,7 @@ class DataService {
         },
       );
       final allCats = jsonDecode(response.body) as List;
-      print('All: $allCats');
+      // print('All: $allCats');
       final cats = allCats.map((cat) => Cat.allCatFromJson(cat)).toList();
       return cats;
     } catch (err) {
@@ -36,7 +36,7 @@ class DataService {
         },
       );
       final favCats = jsonDecode(response.body) as List;
-      print('Favourites: $favCats');
+      // print('Favourites: $favCats');
       final cats = favCats.map((cat) => Cat.favCatFromJson(cat)).toList();
       return cats;
     } catch (err) {
@@ -92,7 +92,6 @@ class DataService {
   // }
   Future<List<Cat>> deleteFav(favId) async {
     try {
-
       final favsList = await http.get(
         Uri.parse(catsListUrl + '/favourites'),
         headers: {
@@ -101,13 +100,11 @@ class DataService {
         },
       );
       final favCats = jsonDecode(favsList.body) as List;
-      print(favCats);
       final currentFavCat = favCats.firstWhere(
           (element) => element['image_id'] == favId,
           orElse: () => null);
-      
-      final currentFavCatId = currentFavCat['id'].toString();
 
+      final currentFavCatId = currentFavCat['id'].toString();
 
       final response = await http.delete(
         Uri.parse(catsListUrl + '/favourites/$currentFavCatId'),
@@ -117,10 +114,27 @@ class DataService {
         },
       );
       final json = jsonDecode(response.body) as List;
-      print('TEST: $json');
-      
+
       final cats = json.map((cat) => Cat.favCatFromJson(cat)).toList();
+
+      print('DELETED : $favId ');
       return cats;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  Future<List<dynamic>> favsList() async {
+    try {
+      final favsList = await http.get(
+        Uri.parse(catsListUrl + '/favourites'),
+        headers: {
+          "x-api-key": "44ae0849-4728-4144-a8ac-223564215798",
+          "Content-Type": "application/json"
+        },
+      );
+      final favCats = jsonDecode(favsList.body) as List;
+      return favCats;
     } catch (err) {
       throw err;
     }
