@@ -37,7 +37,22 @@ class AppNavigator extends StatelessWidget {
                   );
                 })
               : (activeTab == AppTab.favourites)
-                  ? FavouritesScreen()
+                  ? BlocBuilder<NavCubit, Cat?>(builder: (context, cat) {
+                      _appPages = [MaterialPage(child: FavouritesScreen())];
+                      if (cat != null)
+                        _appPages.add(
+                          MaterialPage(
+                            child: CatDetailScreen(cat: cat),
+                          ),
+                        );
+                      return Navigator(
+                        pages: _appPages,
+                        onPopPage: (route, result) {
+                          BlocProvider.of<NavCubit>(context).popToCats();
+                          return route.didPop(result);
+                        },
+                      );
+                    })
                   : ProfileScreen(),
           bottomNavigationBar: TabSelector(
             activeTab: activeTab,
