@@ -50,9 +50,8 @@ class CatsApp extends StatelessWidget {
         ArchSampleLocalizationsDelegate(),
         FlutterBlocLocalizationsDelegate(),
       ],
-      routes: {
-        ArchSampleRoutes.home: (context) {
-          return MultiBlocProvider(
+      builder: (context, child) {
+        return MultiBlocProvider(
             providers: [
               BlocProvider(
                 create: (_) => NavCubit(),
@@ -63,15 +62,19 @@ class CatsApp extends StatelessWidget {
               BlocProvider(
                 create: (_) => AllCatsListBloc()..add(LoadAllCatsEvent()),
               ),
-              BlocProvider(
-                create: (_) => FavCatsListBloc()..add(LoadFavCatsEvent()),
-              ),
+              // BlocProvider(
+              //   create: (_) => FavCatsListBloc()..add(LoadFavCatsEvent()),
+              // ),
               BlocProvider(
                 create: (_) => CatFactsBloc()..add(LoadCatFactsEvent()),
               ),
             ],
-            child: AppNavigator(),
+            child: child!,
           );
+      },
+      routes: {
+        ArchSampleRoutes.home: (context) {
+          return AppNavigator();
         },
       },
     );

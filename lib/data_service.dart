@@ -11,14 +11,14 @@ class DataService {
   Future<List<Cat>> getAllCats() async {
     try {
       final response = await http.get(
-        Uri.parse(catsListUrl + '/images/search?limit=30'),
+        Uri.parse(catsListUrl + '/images/search?limit=20'),
         headers: {
           "x-api-key": "44ae0849-4728-4144-a8ac-223564215798",
           "Content-Type": "application/json"
         },
       );
       final allCats = jsonDecode(response.body) as List;
-      // print('All: $allCats');
+      print('All: $allCats');
       final cats = allCats.map((cat) => Cat.allCatFromJson(cat)).toList();
       return cats;
     } catch (err) {
@@ -36,7 +36,7 @@ class DataService {
         },
       );
       final favCats = jsonDecode(response.body) as List;
-      // print('Favourites: $favCats');
+      print('Favourites: $favCats');
       final cats = favCats.map((cat) => Cat.favCatFromJson(cat)).toList();
       return cats;
     } catch (err) {
@@ -56,6 +56,21 @@ class DataService {
       throw err;
     }
   }
+
+
+  // Future<List<CatFact>> getFacts() async {
+  //   try {
+  //     final response = await http.get(
+  //       Uri.parse(catFactsUrl + '/facts?limit=20'),
+  //     );
+  //     final randomFacts = jsonDecode(response.body) as List;
+  //     print('Facts: $randomFacts');
+  //     final catFacts = randomFacts.map((fact) => CatFact.fromJson(fact)).toList();
+  //     return catFacts;
+  //   } catch (err) {
+  //     throw err;
+  //   }
+  // }
 
   Future<Favourite> setFav(imageId, subId) async {
     try {

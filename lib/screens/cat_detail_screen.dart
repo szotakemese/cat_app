@@ -12,8 +12,8 @@ import 'package:cat_app/data_service.dart';
 
 class CatDetailScreen extends StatelessWidget {
   final Cat cat;
-
-  const CatDetailScreen({Key? key, required this.cat}) : super(key: key);
+  final int index;
+  const CatDetailScreen({Key? key, required this.cat, required this.index}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +26,13 @@ class CatDetailScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Hero(
-                tag: cat.id,
-                child: Image.network(
-                  cat.url,
-                  fit: BoxFit.fitWidth,
-                )),
+            Material(child: Hero(
+              tag: cat.id,
+              child: Image.network(
+                cat.url,
+                fit: BoxFit.fitWidth,
+              ),
+            ),),
             Container(
               child: BlocBuilder<CatFactsBloc, CatFactsState>(
                   builder: (context, state) {

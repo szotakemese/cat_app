@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'cats_list_item.dart';
+import 'list_item.dart';
 
 class CatsList extends StatelessWidget {
   final state;
@@ -13,7 +13,8 @@ class CatsList extends StatelessWidget {
         : ListView.builder(
             itemCount: state.cats.length,
             itemBuilder: (context, index) {
-              return CatsListItem(state: state, index: index,);
+              return ListItem(key: Key(index.toString()), state: state, index: index, listType: state.cats,);
+              // return ListItem(key: Key(index.toString()), state: state, index: index,);
             },
           );
   }

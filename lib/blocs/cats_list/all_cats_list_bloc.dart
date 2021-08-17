@@ -18,7 +18,9 @@ class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
 
       try {
         final cats = await _dataService.getAllCats();
-        yield LoadedCatsState(cats: cats);
+        final favourites = await _dataService.getFavCats();
+        yield LoadedCatsState(cats: cats, favourites: favourites);
+        // yield LoadedCatsState(cats: cats);
       } catch (e) {
         yield FailedLoadCatsState(error: e);
       }
@@ -30,23 +32,28 @@ class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
       final List<Cat> updatedCats = (state as LoadedCatsState).cats.map((cat) {
         return cat.id == event.cat.id ? event.cat : cat;
       }).toList();
-      yield LoadedCatsState(cats: updatedCats);
+      final List<Cat> updatedFavourites =
+          (state as LoadedCatsState).favourites.map((cat) {
+        return cat.id == event.cat.id ? event.cat : cat;
+      }).toList();
+      yield LoadedCatsState(cats: updatedCats, favourites: updatedFavourites,);
+      // yield LoadedCatsState(cats: updatedCats);
     }
   }
 }
 
-class FavCatsListBloc extends AllCatsListBloc {
-  @override
-  Stream<CatsState> mapEventToState(CatsEvent event) async* {
-    if (event is LoadFavCatsEvent || event is RefreshFavCatsEvent) {
-      yield LoadingCatsState();
+// class FavCatsListBloc extends AllCatsListBloc {
+//   @override
+//   Stream<CatsState> mapEventToState(CatsEvent event) async* {
+//     if (event is LoadFavCatsEvent || event is RefreshFavCatsEvent) {
+//       yield LoadingCatsState();
 
-      try {
-        final cats = await _dataService.getFavCats();
-        yield LoadedCatsState(cats: cats);
-      } catch (e) {
-        yield FailedLoadCatsState(error: e);
-      }
-    } else if (event is CatUpdated) yield* mapCatUpdatedToState(event);
-  }
-}
+//       try {
+//         final cats = await _dataService.getFavCats();
+//         yield LoadedCatsState(cats: cats);
+//       } catch (e) {
+//         yield FailedLoadCatsState(error: e);
+//       }
+//     } else if (event is CatUpdated) yield* mapCatUpdatedToState(event);
+//   }
+// }

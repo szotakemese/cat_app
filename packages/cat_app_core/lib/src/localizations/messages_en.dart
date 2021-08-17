@@ -1,5 +1,6 @@
-
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:intl/intl.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:intl/message_lookup_by_library.dart';
 
 final messages = MessageLookup();
@@ -14,16 +15,14 @@ class MessageLookup extends MessageLookupByLibrary {
   @override
   String get localeName => 'en';
 
-  static String m0(task) => 'Deleted "$task"';
-
   @override
   final messages = _notInlinedMessages(_notInlinedMessages);
 
   static Map<String, dynamic> _notInlinedMessages(_) => {
-        'cancel': MessageLookupByLibrary.simpleMessage('Cancel'),
+        // 'cancel': MessageLookupByLibrary.simpleMessage('Cancel'),
         'favourites': MessageLookupByLibrary.simpleMessage('Favourites'),
         'profile': MessageLookupByLibrary.simpleMessage('Profile'),
         'allCatsList': MessageLookupByLibrary.simpleMessage('All Cats List'),
-        'undo': MessageLookupByLibrary.simpleMessage('Undo')
+        // 'undo': MessageLookupByLibrary.simpleMessage('Undo')
       };
 }
