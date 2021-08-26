@@ -14,6 +14,25 @@ class LoadFavCatsEvent extends CatsEvent{}
 
 class RefreshFavCatsEvent extends CatsEvent{}
 
+class CatAddedToFavs extends CatsEvent{
+  final String catId;
+  final String userId;
+
+  const CatAddedToFavs({required this.catId, required this.userId});
+  
+  @override
+  String toString() => 'CatAddedToFavourites { addedCat: $catId }';
+}
+
+class CatDeletedFromFavs extends CatsEvent{
+  final String catId;
+
+  const CatDeletedFromFavs({required this.catId});
+
+  @override
+  String toString() => 'CatDeletedFromFavourites { deletedCat: $catId }';
+}
+
 class CatUpdated extends CatsEvent {
   final Cat cat;
 

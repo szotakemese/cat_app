@@ -18,7 +18,7 @@ class DataService {
         },
       );
       final allCats = jsonDecode(response.body) as List;
-      print('All: $allCats');
+      // print('All: $allCats');
       final cats = allCats.map((cat) => Cat.allCatFromJson(cat)).toList();
       return cats;
     } catch (err) {
@@ -36,7 +36,7 @@ class DataService {
         },
       );
       final favCats = jsonDecode(response.body) as List;
-      print('Favourites: $favCats');
+      // print('Favourites: $favCats');
       final cats = favCats.map((cat) => Cat.favCatFromJson(cat)).toList();
       return cats;
     } catch (err) {
@@ -105,7 +105,7 @@ class DataService {
   //     throw err;
   //   }
   // }
-  Future<List<Cat>> deleteFav(favId) async {
+  Future<void> deleteFav(favId) async {
     try {
       final favsList = await http.get(
         Uri.parse(catsListUrl + '/favourites'),
@@ -128,12 +128,10 @@ class DataService {
           "Content-Type": "application/json"
         },
       );
-      final json = jsonDecode(response.body) as List;
-
-      final cats = json.map((cat) => Cat.favCatFromJson(cat)).toList();
+      final json = jsonDecode(response.body);
+      print(json);
 
       print('DELETED : $favId ');
-      return cats;
     } catch (err) {
       throw err;
     }

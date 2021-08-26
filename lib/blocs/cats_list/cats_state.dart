@@ -1,19 +1,29 @@
 import 'package:cat_app/models/models.dart';
 
-abstract class CatsState {}
+class CatsState {
+  final List<Cat> cats;
+  final List<Cat> favourites;
+  final bool isLoading;
+  final dynamic error;
 
-class LoadingCatsState extends CatsState {}
+  CatsState({
+    this.cats = const <Cat>[],
+    this.favourites = const <Cat>[],
+    this.isLoading = false,
+    this.error,
+  });
 
-class LoadedCatsState extends CatsState {
-  List<Cat> cats;
-  List<Cat> favourites;
-  // LoadedCatsState({required this.cats});
-  LoadedCatsState({ required this.cats, required this.favourites,});
-
-  // List<Cat> get favourites => cats.where((element) => element.isFav).toList();
-}
-
-class FailedLoadCatsState extends CatsState {
-  Object error;
-  FailedLoadCatsState({required this.error});
+  CatsState copyWith({
+    final List<Cat>? cats,
+    final List<Cat>? favourites,
+    final bool? isLoading,
+    final dynamic error,
+  }) {
+    return CatsState(
+      cats: cats ?? this.cats,
+      favourites: favourites ?? this.favourites,
+      isLoading: isLoading ?? this.isLoading,
+      error: error,
+    );
+  }
 }

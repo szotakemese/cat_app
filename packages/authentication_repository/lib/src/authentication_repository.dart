@@ -5,15 +5,13 @@ import 'package:cache/cache.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
-
-/// Thrown if during the sign up process if a failure occurs.
-class SignUpFailure implements Exception {}
-
-/// Thrown during the login process if a failure occurs.
-class LogInWithEmailAndPasswordFailure implements Exception {}
+import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 
 /// Thrown during the sign in with google process if a failure occurs.
 class LogInWithGoogleFailure implements Exception {}
+
+/// Thrown during the sign in with Facebook process if a failure occurs.
+class LogInWithFacebookFailure implements Exception {}
 
 /// Thrown during the logout process if a failure occurs.
 class LogOutFailure implements Exception {}
@@ -58,20 +56,6 @@ class AuthenticationRepository {
     return _cache.read<User>(key: userCacheKey) ?? User.empty;
   }
 
-  /// Creates a new user with the provided [email] and [password].
-  ///
-  /// Throws a [SignUpFailure] if an exception occurs.
-  Future<void> signUp({required String email, required String password}) async {
-    try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-    } on Exception {
-      throw SignUpFailure();
-    }
-  }
-
   /// Starts the Sign In with Google Flow.
   ///
   /// Throws a [logInWithGoogle] if an exception occurs.
@@ -89,22 +73,61 @@ class AuthenticationRepository {
     }
   }
 
-  /// Signs in with the provided [email] and [password].
+  ///=======================================================
+  /// Starts the Sign In with Facebook.
   ///
-  /// Throws a [LogInWithEmailAndPasswordFailure] if an exception occurs.
-  Future<void> logInWithEmailAndPassword({
-    required String email,
-    required String password,
-  }) async {
-    try {
-      await _firebaseAuth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-    } on Exception {
-      throw LogInWithEmailAndPasswordFailure();
+  ///
+  Future<void> logInWithFacebok() async {
+    // Create an instance of FacebookLogin
+    final fb = FacebookLogin();
+
+    // Log in
+    final res = await fb.logIn(permissions: [
+      FacebookPermission.publicProfile,
+      FacebookPermission.email,
+    ]);
+
+    // Check result status
+    switch (res.status) {
+      case FacebookLoginStatus.success:
+        // Logged in
+
+        // Send access token to server for validation and auth
+        try {
+          final FacebookAccessToken? accessToken = res.accessToken;
+          final firebase_auth.AuthCredential authCredential =
+              firebase_auth.FacebookAuthProvider.credential(accessToken!.token);
+          await firebase_auth.FirebaseAuth.instance
+              .signInWithCredential(authCredential);
+        } catch(exception) {
+          throw LogInWithFacebookFailure();
+        }
+
+        // Get profile data
+        final profile = await fb.getUserProfile();
+        print('Hello, ${profile!.name}! You ID: ${profile.userId}');
+
+        // Get user profile image url
+        final imageUrl = await fb.getProfileImageUrl(width: 100);
+        print('Your profile image: $imageUrl');
+
+        // Get email (since we request email permission)
+        final email = await fb.getUserEmail();
+        // But user can decline permission
+        if (email != null) print('And your email is $email');
+
+        break;
+      case FacebookLoginStatus.cancel:
+        // User cancel log in
+        break;
+      case FacebookLoginStatus.error:
+        // Log in failed
+        print('Error while log in: ${res.error}');
+        break;
     }
   }
+
+  ///========================================================
 
   /// Signs out the current user which will emit
   /// [User.empty] from the [user] Stream.

@@ -18,13 +18,13 @@ class CatsScreen extends StatelessWidget {
         ],
       ),
       body: BlocBuilder<AllCatsListBloc, CatsState>(builder: (context, state) {
-        if (state is LoadingCatsState) {
+        if (state.isLoading) {
           return Center(
             child: CircularProgressIndicator(),
           );
-        } else if (state is LoadedCatsState) {
+        } else if (!state.isLoading) {
           return CatsList(state);
-        } else if (state is FailedLoadCatsState) {
+        } else if (state.error) {
           return Padding(
             padding: const EdgeInsets.all(30.0),
             child: Center(

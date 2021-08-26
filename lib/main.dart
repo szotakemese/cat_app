@@ -8,7 +8,6 @@ import 'package:flutter/widgets.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'auth/auth.dart';
-import './localization.dart';
 import './blocs/blocs.dart';
 
 import './helpers/navigation.dart';
@@ -41,14 +40,13 @@ class CatsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: FlutterBlocLocalizations().appTitle,
+      title: "Cat App",
       theme: ThemeData(
         primarySwatch: Colors.orange,
         accentColor: Colors.teal.shade900,
       ),
       localizationsDelegates: [
         ArchSampleLocalizationsDelegate(),
-        FlutterBlocLocalizationsDelegate(),
       ],
       builder: (context, child) {
         return MultiBlocProvider(

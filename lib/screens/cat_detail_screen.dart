@@ -8,7 +8,7 @@ import '../models/models.dart';
 import '../widgets/widgets.dart';
 
 import 'package:cat_app/auth/auth.dart';
-import 'package:cat_app/data_service.dart';
+// import 'package:cat_app/data_service.dart';
 
 class CatDetailScreen extends StatelessWidget {
   final Cat cat;
@@ -18,7 +18,7 @@ class CatDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.select((AuthBloc bloc) => bloc.state.user);
-    final _dataService = DataService();
+    // final _dataService = DataService();
     return Scaffold(
       appBar: AppBar(
         title: Text('ID: ' + cat.id),
@@ -64,15 +64,21 @@ class CatDetailScreen extends StatelessWidget {
             onPressed: () {
               if (!cat.isFav) {
                 print('==============ADD TO FAVOURITES===============');
-                _dataService.setFav(
-                  cat.id,
-                  user.id,
+                // _dataService.setFav(
+                //   cat.id,
+                //   user.id,
+                // );
+                BlocProvider.of<AllCatsListBloc>(context).add(
+                  CatAddedToFavs(catId: cat.id, userId: user.id),
                 );
               } else {
                 print('==============DELETE FROM FAVOURITES===============');
-                print('ID: ${cat.id}');
-                _dataService.deleteFav(
-                  cat.id,
+                // print('ID: ${cat.id}');
+                // _dataService.deleteFav(
+                //   cat.id,
+                // );
+                BlocProvider.of<AllCatsListBloc>(context).add(
+                  CatDeletedFromFavs(catId: cat.id),
                 );
               }
 

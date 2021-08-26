@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:cat_app/auth/auth.dart';
-import 'package:cat_app/data_service.dart';
+// import 'package:cat_app/data_service.dart';
 import 'package:cat_app/blocs/blocs.dart';
 import 'package:cat_app/models/models.dart';
 
@@ -22,11 +22,10 @@ class ListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.select((AuthBloc bloc) => bloc.state.user);
-    final _dataService = DataService();
+    // final _dataService = DataService();
     // final cat = state.cats.firstWhere((cat) => cat.id == state.cats[index].id,
     // orElse: () => null);
-    final cat = listType.firstWhere((cat) => cat.id == listType[index].id,
-        orElse: () => null);
+    final cat = listType.firstWhere((cat) => cat.id == listType[index].id);
 
     return Card(
       child: Padding(
@@ -64,16 +63,21 @@ class ListItem extends StatelessWidget {
             onPressed: () {
               if (!cat.isFav) {
                 print('==============ADD TO FAVOURITES===============');
-                _dataService.setFav(
-                  cat.id,
-                  user.id,
+                // _dataService.setFav(
+                //   cat.id,
+                //   user.id,
+                // );
+                BlocProvider.of<AllCatsListBloc>(context).add(
+                  CatAddedToFavs(catId: cat.id, userId: user.id),
                 );
-
               } else {
                 print('==============DELETE FROM FAVOURITES===============');
-                print('ID: ${cat.id}');
-                _dataService.deleteFav(
-                  cat.id,
+                // print('ID: ${cat.id}');
+                // _dataService.deleteFav(
+                //   cat.id,
+                // );
+                BlocProvider.of<AllCatsListBloc>(context).add(
+                  CatDeletedFromFavs(catId: cat.id),
                 );
               }
 
