@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Cat App</string>
+    <string name="facebook_app_id">1236790000114494</string>
+    <string name="fb_login_protocol_scheme">fb1236790000114494</string>
+</resources>
