@@ -8,10 +8,18 @@ import 'package:meta/meta.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 
 /// Thrown during the sign in with google process if a failure occurs.
-class LogInWithGoogleFailure implements Exception {}
+class LogInWithGoogleFailure implements Exception {
+  final dynamic message;
+
+  const LogInWithGoogleFailure(this.message);
+  }
 
 /// Thrown during the sign in with Facebook process if a failure occurs.
-class LogInWithFacebookFailure implements Exception {}
+class LogInWithFacebookFailure implements Exception {
+  final dynamic message;
+
+  const LogInWithFacebookFailure(this.message);
+}
 
 /// Thrown during the logout process if a failure occurs.
 class LogOutFailure implements Exception {}
@@ -28,10 +36,15 @@ class AuthenticationRepository {
   })  : _cache = cache ?? CacheClient(),
         _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
         _googleSignIn = googleSignIn ?? GoogleSignIn.standard();
+    
 
   final CacheClient _cache;
   final firebase_auth.FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
+
+
+    // Create an instance of FacebookLogin
+    final fb = FacebookLogin();
 
   /// User cache key.
   /// Should only be used for testing purposes.
@@ -63,13 +76,13 @@ class AuthenticationRepository {
     try {
       final googleUser = await _googleSignIn.signIn();
       final googleAuth = await googleUser?.authentication;
-      final credential = firebase_auth.GoogleAuthProvider.credential(
+      final authCredential = firebase_auth.GoogleAuthProvider.credential(
         accessToken: googleAuth?.accessToken,
         idToken: googleAuth?.idToken,
       );
-      await _firebaseAuth.signInWithCredential(credential);
-    } on Exception {
-      throw LogInWithGoogleFailure();
+      await _firebaseAuth.signInWithCredential(authCredential);
+    } on Exception catch (e) {
+      throw LogInWithGoogleFailure(e);
     }
   }
 
@@ -78,8 +91,6 @@ class AuthenticationRepository {
   ///
   ///
   Future<void> logInWithFacebok() async {
-    // Create an instance of FacebookLogin
-    final fb = FacebookLogin();
 
     // Log in
     final res = await fb.logIn(permissions: [
@@ -99,8 +110,11 @@ class AuthenticationRepository {
               firebase_auth.FacebookAuthProvider.credential(accessToken!.token);
           await firebase_auth.FirebaseAuth.instance
               .signInWithCredential(authCredential);
-        } catch(exception) {
-          throw LogInWithFacebookFailure();
+        } catch (e) {
+          if (e is firebase_auth.FirebaseAuthException){
+            throw LogInWithFacebookFailure(e.message);
+          }
+          throw LogInWithFacebookFailure(e);
         }
 
         // Get profile data
@@ -138,6 +152,7 @@ class AuthenticationRepository {
       await Future.wait([
         _firebaseAuth.signOut(),
         _googleSignIn.signOut(),
+        
       ]);
     } on Exception {
       throw LogOutFailure();

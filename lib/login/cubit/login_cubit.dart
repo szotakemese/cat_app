@@ -16,8 +16,11 @@ class LoginCubit extends Cubit<LoginState> {
     try {
       await _authenticationRepository.logInWithGoogle();
       emit(state.copyWith(status: FormzStatus.submissionSuccess));
-    } on Exception {
-      emit(state.copyWith(status: FormzStatus.submissionFailure));
+    } on Exception catch (e) {
+      if(e is LogInWithGoogleFailure){
+        print('EXCEPTION: $e}');
+      }
+      emit(state.copyWith(status: FormzStatus.submissionFailure, error: e));
     } on NoSuchMethodError {
       emit(state.copyWith(status: FormzStatus.pure));
     }
@@ -28,11 +31,13 @@ class LoginCubit extends Cubit<LoginState> {
     try {
       await _authenticationRepository.logInWithFacebok();
       emit(state.copyWith(status: FormzStatus.submissionSuccess));
-    } on Exception {
-      emit(state.copyWith(status: FormzStatus.submissionFailure));
+    } on Exception catch (e) {
+      if(e is LogInWithFacebookFailure){
+        print('EXCEPTION: $e');
+      }
+      emit(state.copyWith(status: FormzStatus.submissionFailure, error: e));
     } on NoSuchMethodError {
       emit(state.copyWith(status: FormzStatus.pure));
     }
   }
 }
-
