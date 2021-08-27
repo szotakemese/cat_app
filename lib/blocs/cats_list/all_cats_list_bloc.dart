@@ -13,12 +13,11 @@ class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
 
   @override
   Stream<CatsState> mapEventToState(CatsEvent event) async* {
-    if (event is LoadAllCatsEvent || event is RefreshAllCatsEvent) {
+    if (event is LoadAllCatsEvent) {
       yield state.copyWith(isLoading: true);
-
       try {
         final cats = await _dataService.getAllCats();
-        final favourites = await _dataService.getFavCats();
+        final favourites = await _dataService.getFavCats(event.userId);
         yield state.copyWith(
             cats: cats, favourites: favourites, isLoading: false);
         // yield LoadedCatsState(cats: cats);

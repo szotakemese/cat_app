@@ -26,10 +26,10 @@ class DataService {
     }
   }
 
-  Future<List<Cat>> getFavCats() async {
+  Future<List<Cat>> getFavCats(userId) async {
     try {
       final response = await http.get(
-        Uri.parse(catsListUrl + '/favourites'),
+        Uri.parse(catsListUrl + '/favourites?sub_id=$userId'),
         headers: {
           "x-api-key": "44ae0849-4728-4144-a8ac-223564215798",
           "Content-Type": "application/json"
@@ -137,19 +137,19 @@ class DataService {
     }
   }
 
-  Future<List<dynamic>> favsList() async {
-    try {
-      final favsList = await http.get(
-        Uri.parse(catsListUrl + '/favourites'),
-        headers: {
-          "x-api-key": "44ae0849-4728-4144-a8ac-223564215798",
-          "Content-Type": "application/json"
-        },
-      );
-      final favCats = jsonDecode(favsList.body) as List;
-      return favCats;
-    } catch (err) {
-      throw err;
-    }
-  }
+  // Future<List<dynamic>> favsList() async {
+  //   try {
+  //     final favsList = await http.get(
+  //       Uri.parse(catsListUrl + '/favourites'),
+  //       headers: {
+  //         "x-api-key": "44ae0849-4728-4144-a8ac-223564215798",
+  //         "Content-Type": "application/json"
+  //       },
+  //     );
+  //     final favCats = jsonDecode(favsList.body) as List;
+  //     return favCats;
+  //   } catch (err) {
+  //     throw err;
+  //   }
+  // }
 }

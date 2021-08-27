@@ -6,13 +6,13 @@ abstract class CatsEvent{
   List<Cat> get props => [];
 }
 
-class LoadAllCatsEvent extends CatsEvent{}
+class LoadAllCatsEvent extends CatsEvent{
+  final String userId;
 
-class RefreshAllCatsEvent extends CatsEvent{}
+  const LoadAllCatsEvent(this.userId);
+}
 
-class LoadFavCatsEvent extends CatsEvent{}
-
-class RefreshFavCatsEvent extends CatsEvent{}
+// class RefreshAllCatsEvent extends CatsEvent{}
 
 class CatAddedToFavs extends CatsEvent{
   final String catId;

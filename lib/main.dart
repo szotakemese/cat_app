@@ -39,6 +39,7 @@ class CatsApp extends StatelessWidget {
   static Page page() => const MaterialPage<void>(child: CatsApp());
   @override
   Widget build(BuildContext context) {
+    final user = context.select((AuthBloc bloc) => bloc.state.user);
     return MaterialApp(
       title: "Cat App",
       theme: ThemeData(
@@ -58,7 +59,7 @@ class CatsApp extends StatelessWidget {
                 create: (context) => TabBloc(),
               ),
               BlocProvider(
-                create: (_) => AllCatsListBloc()..add(LoadAllCatsEvent()),
+                create: (_) => AllCatsListBloc()..add(LoadAllCatsEvent(user.id)),
               ),
               // BlocProvider(
               //   create: (_) => FavCatsListBloc()..add(LoadFavCatsEvent()),
