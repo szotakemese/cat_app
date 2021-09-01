@@ -1,23 +1,21 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:cat_app/data_service.dart';
 import 'cats_event.dart';
 import 'cats_state.dart';
 
 import 'package:cat_app/models/models.dart';
 
 class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
-  final _dataService = DataService();
-
-  AllCatsListBloc() : super(CatsState());
+  final dataService;
+  AllCatsListBloc(this.dataService) : super(CatsState());
 
   @override
   Stream<CatsState> mapEventToState(CatsEvent event) async* {
     if (event is LoadAllCatsEvent) {
       yield state.copyWith(isLoading: true);
       try {
-        final cats = await _dataService.getAllCats();
-        final favourites = await _dataService.getFavCats(event.userId);
+        final cats = await dataService.getAllCats();
+        final favourites = await dataService.getFavCats(event.userId);
         yield state.copyWith(
             cats: cats, favourites: favourites, isLoading: false);
         // yield LoadedCatsState(cats: cats);
@@ -50,7 +48,7 @@ class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
     try {
       final catId = event.catId;
       final userId = event.userId;
-      await _dataService.setFav(catId, userId);
+      await dataService.setFav(catId, userId);
 
       Cat currentCat = state.cats.firstWhere((element) => element.id == catId);
 
@@ -67,12 +65,11 @@ class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
       CatDeletedFromFavs event) async* {
     try {
       final catId = event.catId;
-      await _dataService.deleteFav(catId);
-
-      Cat currentCat = state.cats.firstWhere((element) => element.id == catId);
+      Cat currentCat = state.favourites.firstWhere((element) => element.id == catId);
 
       List<Cat> favourites = state.favourites;
 
+      await dataService.deleteFav(catId);
       favourites.remove(currentCat);
 
       yield state.copyWith(favourites: favourites);

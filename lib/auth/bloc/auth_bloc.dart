@@ -10,6 +10,7 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
+
   AuthBloc({required AuthenticationRepository authenticationRepository})
       : _authenticationRepository = authenticationRepository,
         super(
@@ -31,6 +32,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       yield _mapUserChangedToState(event, state);
     } else if (event is AuthLogoutRequested) {
       unawaited(_authenticationRepository.logOut());
+
     }
   }
 

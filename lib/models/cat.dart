@@ -18,4 +18,17 @@ class Cat {
         url: json['image']['url'],
         isFav: true,
       );
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'url': url,
+      'isFav': isFav ? 1 : 0,
+    };
+  }
+
+  @override
+  String toString() {
+    return 'Cat{id: $id, url: $url, isFav: $isFav}';
+  }
 }

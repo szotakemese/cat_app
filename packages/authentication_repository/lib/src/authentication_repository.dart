@@ -12,7 +12,7 @@ class LogInWithGoogleFailure implements Exception {
   final dynamic message;
 
   const LogInWithGoogleFailure(this.message);
-  }
+}
 
 /// Thrown during the sign in with Facebook process if a failure occurs.
 class LogInWithFacebookFailure implements Exception {
@@ -36,15 +36,13 @@ class AuthenticationRepository {
   })  : _cache = cache ?? CacheClient(),
         _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
         _googleSignIn = googleSignIn ?? GoogleSignIn.standard();
-    
 
   final CacheClient _cache;
   final firebase_auth.FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
 
-
-    // Create an instance of FacebookLogin
-    final fb = FacebookLogin();
+  // Create an instance of FacebookLogin
+  final fb = FacebookLogin();
 
   /// User cache key.
   /// Should only be used for testing purposes.
@@ -91,7 +89,6 @@ class AuthenticationRepository {
   ///
   ///
   Future<void> logInWithFacebok() async {
-
     // Log in
     final res = await fb.logIn(permissions: [
       FacebookPermission.publicProfile,
@@ -111,7 +108,7 @@ class AuthenticationRepository {
           await firebase_auth.FirebaseAuth.instance
               .signInWithCredential(authCredential);
         } catch (e) {
-          if (e is firebase_auth.FirebaseAuthException){
+          if (e is firebase_auth.FirebaseAuthException) {
             throw LogInWithFacebookFailure(e.message);
           }
           throw LogInWithFacebookFailure(e);
@@ -152,7 +149,7 @@ class AuthenticationRepository {
       await Future.wait([
         _firebaseAuth.signOut(),
         _googleSignIn.signOut(),
-        
+        fb.logOut(),
       ]);
     } on Exception {
       throw LogOutFailure();

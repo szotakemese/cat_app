@@ -1,27 +1,43 @@
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:cat_app/data_service.dart';
+import 'package:cat_app/helpers/database.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../auth.dart';
 
 class Auth extends StatelessWidget {
-  const Auth({
-    Key? key,
-    required AuthenticationRepository authenticationRepository,
-  })  : _authenticationRepository = authenticationRepository,
+  const Auth(
+      {Key? key,
+      required AuthenticationRepository authenticationRepository,
+      required this.dataBase,
+      required this.dataService})
+      : _authenticationRepository = authenticationRepository,
         super(key: key);
 
   final AuthenticationRepository _authenticationRepository;
+  final DB dataBase;
+  final DataService dataService;
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider.value(
-      value: _authenticationRepository,
-      child: BlocProvider(
-        create: (_) => AuthBloc(
-          authenticationRepository: _authenticationRepository,
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+          create: (_) => dataBase,
         ),
-        child: const AuthView(),
+        RepositoryProvider(
+          create: (_) => dataService,
+        ),
+      ],
+      child: RepositoryProvider.value(
+        value: _authenticationRepository,
+        child: BlocProvider(
+          create: (_) => AuthBloc(
+            authenticationRepository: _authenticationRepository,
+          ),
+          child: const AuthView(),
+        ),
       ),
     );
   }

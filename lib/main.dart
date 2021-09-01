@@ -1,3 +1,4 @@
+import 'package:cat_app/data_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: import_of_legacy_library_into_null_safe
@@ -11,6 +12,8 @@ import 'auth/auth.dart';
 import './blocs/blocs.dart';
 
 import './helpers/navigation.dart';
+
+import 'package:cat_app/helpers/database.dart';
 
 // void main() {
 //   Bloc.observer = SimpleBlocObserver();
@@ -30,7 +33,18 @@ void main() async {
   await Firebase.initializeApp();
   final authenticationRepository = AuthenticationRepository();
   await authenticationRepository.user.first;
-  runApp(Auth(authenticationRepository: authenticationRepository));
+
+  final dataBase = DB();
+  await dataBase.openDB();
+  // await DB().openDB();
+
+  final dataService = DataService(dataBase: dataBase);
+  
+  runApp(Auth(
+    authenticationRepository: authenticationRepository,
+    dataBase: dataBase,
+    dataService: dataService,
+  ));
 }
 
 class CatsApp extends StatelessWidget {
@@ -40,6 +54,7 @@ class CatsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.select((AuthBloc bloc) => bloc.state.user);
+
     return MaterialApp(
       title: "Cat App",
       theme: ThemeData(
@@ -51,25 +66,25 @@ class CatsApp extends StatelessWidget {
       ],
       builder: (context, child) {
         return MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                create: (_) => NavCubit(),
-              ),
-              BlocProvider<TabBloc>(
-                create: (context) => TabBloc(),
-              ),
-              BlocProvider(
-                create: (_) => AllCatsListBloc()..add(LoadAllCatsEvent(user.id)),
-              ),
-              // BlocProvider(
-              //   create: (_) => FavCatsListBloc()..add(LoadFavCatsEvent()),
-              // ),
-              BlocProvider(
-                create: (_) => CatFactsBloc()..add(LoadCatFactsEvent()),
-              ),
-            ],
-            child: child!,
-          );
+          providers: [
+            BlocProvider(
+              create: (_) => NavCubit(),
+            ),
+            BlocProvider<TabBloc>(
+              create: (_) => TabBloc(),
+            ),
+            BlocProvider(
+              create: (_) => AllCatsListBloc(context.read<DataService>())..add(LoadAllCatsEvent(user.id)),
+            ),
+            // BlocProvider(
+            //   create: (_) => FavCatsListBloc()..add(LoadFavCatsEvent()),
+            // ),
+            BlocProvider(
+              create: (_) => CatFactsBloc(context.read<DataService>())..add(LoadCatFactsEvent()),
+            ),
+          ],
+          child: child!,
+        );
       },
       routes: {
         ArchSampleRoutes.home: (context) {
@@ -78,5 +93,4 @@ class CatsApp extends StatelessWidget {
       },
     );
   }
-
 }
