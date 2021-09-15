@@ -12,22 +12,58 @@ class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
   @override
   Stream<CatsState> mapEventToState(CatsEvent event) async* {
     if (event is LoadAllCatsEvent) {
-      yield state.copyWith(isLoading: true);
+      yield state.copyWith(
+        status: CatsStatus.initial,
+        // isLoaded: true,
+      );
       try {
-        final cats = await dataService.getAllCats();
+        final cats = await dataService.getAllCats(0);
         final favourites = await dataService.getFavCats(event.userId);
         yield state.copyWith(
-            cats: cats, favourites: favourites, isLoading: false);
+          cats: cats,
+          favourites: favourites,
+          status: CatsStatus.succes,
+          // isLoaded: false,
+        );
         // yield LoadedCatsState(cats: cats);
       } catch (e) {
-        yield state.copyWith(error: e);
+        yield state.copyWith(
+          status: CatsStatus.failure,
+          error: e,
+        );
       }
+    } else if (event is LoadMoreCats) {
+      yield* mapLoadMoreCatsToState(event);
     } else if (event is CatUpdated) {
       yield* mapCatUpdatedToState(event);
     } else if (event is CatAddedToFavs) {
       yield* mapCatAddedToFavsToState(event);
     } else if (event is CatDeletedFromFavs) {
       yield* mapCatDeletedFromFavsToState(event);
+    }
+  }
+
+  Stream<CatsState> mapLoadMoreCatsToState(LoadMoreCats event) async* {
+    if (state.isLoading)
+      yield state;
+    else {
+      try {
+        yield state.copyWith(isLoading: true);
+        final moreCats = await dataService.getAllCats(event.page);
+
+        List<Cat> cats = state.cats + moreCats;
+        yield moreCats.isEmpty
+            ? state.copyWith(hasReachedMax: true, isLoading: true)
+            : state.copyWith(
+                status: CatsStatus.succes,
+                cats: cats,
+                hasReachedMax: false,
+                isLoading: false,
+              );
+        print("${cats.length} cats are loaded");
+      } catch (e) {
+        print(e);
+      }
     }
   }
 
@@ -65,7 +101,8 @@ class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
       CatDeletedFromFavs event) async* {
     try {
       final catId = event.catId;
-      Cat currentCat = state.favourites.firstWhere((element) => element.id == catId);
+      Cat currentCat =
+          state.favourites.firstWhere((element) => element.id == catId);
 
       List<Cat> favourites = state.favourites;
 

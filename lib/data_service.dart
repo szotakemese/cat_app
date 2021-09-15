@@ -7,26 +7,27 @@ import './models/models.dart';
 class DataService {
   final catsListUrl = 'https://api.thecatapi.com/v1';
   final catFactsUrl = 'https://catfact.ninja';
+  final limit = 7;
+  final order = 'asc';
 
   final DB dataBase;
 
   const DataService({required this.dataBase});
 
-  Future<List<Cat>> getAllCats() async {
+  Future<List<Cat>> getAllCats(int page) async {
     try {
       final response = await http.get(
-        Uri.parse(catsListUrl + '/images/search?limit=15'),
+        Uri.parse(catsListUrl +
+            '/images/search?limit=$limit&page=$page&order=$order'),
         headers: {
           "x-api-key": "44ae0849-4728-4144-a8ac-223564215798",
           "Content-Type": "application/json"
         },
       );
       final allCats = jsonDecode(response.body) as List;
-      // print('All: $allCats');
       final cats = allCats.map((cat) => Cat.allCatFromJson(cat)).toList();
-
-      // cats.map((cat) async => await dataBase.insertCatToDb(cat));
-      cats.forEach((cat) async => await dataBase.insertCatToDb(cat));
+      // print('All: $cats');
+      // cats.forEach((cat) async => await dataBase.insertCatToDb(cat));    //+++++++++++++++++++
       await dataBase.getCatsFromDb();
 
       return cats;
@@ -45,8 +46,8 @@ class DataService {
         },
       );
       final favCats = jsonDecode(response.body) as List;
-      // print('Favourites: $favCats');
       final cats = favCats.map((cat) => Cat.favCatFromJson(cat)).toList();
+      // print('Favourites: $cats');
       return cats;
     } catch (err) {
       throw err;

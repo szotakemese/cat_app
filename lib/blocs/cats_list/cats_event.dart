@@ -12,7 +12,11 @@ class LoadAllCatsEvent extends CatsEvent{
   const LoadAllCatsEvent(this.userId);
 }
 
-// class RefreshAllCatsEvent extends CatsEvent{}
+class LoadMoreCats extends CatsEvent{
+  final int page;
+
+  const LoadMoreCats(this.page);
+}
 
 class CatAddedToFavs extends CatsEvent{
   final String catId;

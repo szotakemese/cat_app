@@ -22,11 +22,11 @@ class FavouritesScreen extends StatelessWidget {
         ],
       ),
       body: BlocBuilder<AllCatsListBloc, CatsState>(builder: (context, state) {
-        if (state.isLoading) {
+        if (state.status == CatsStatus.initial) {
           return Center(
             child: CircularProgressIndicator(),
           );
-        } else if (!state.isLoading) {
+        } else if (state.status == CatsStatus.succes) {
           return FavouritesList(state);
           // return CatsList(state);
         } else if (state.error) {

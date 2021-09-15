@@ -15,18 +15,18 @@ class CatsScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () async =>
-                BlocProvider.of<AllCatsListBloc>(context).add(LoadAllCatsEvent(user.id)),
+                context.read<AllCatsListBloc>().add(LoadAllCatsEvent(user.id)),
             icon: Icon(Icons.refresh),
           )
         ],
       ),
       body: BlocBuilder<AllCatsListBloc, CatsState>(builder: (context, state) {
-        if (state.isLoading) {
+        if (state.status == CatsStatus.initial) {
           return Center(
             child: CircularProgressIndicator(),
           );
-        } else if (!state.isLoading) {
-          return CatsList(state);
+        } else if (state.status == CatsStatus.succes) {
+          return CatsList();
         } else if (state.error) {
           return Padding(
             padding: const EdgeInsets.all(30.0),

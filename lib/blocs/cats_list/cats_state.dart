@@ -1,15 +1,21 @@
 import 'package:cat_app/models/models.dart';
 
+enum CatsStatus { initial, loading, succes, failure }
+
 class CatsState {
   final List<Cat> cats;
   final List<Cat> favourites;
   final bool isLoading;
+  final CatsStatus status;
+  final bool hasReachedMax;
   final dynamic error;
 
   CatsState({
     this.cats = const <Cat>[],
     this.favourites = const <Cat>[],
     this.isLoading = false,
+    this.status = CatsStatus.initial,
+    this.hasReachedMax = false,
     this.error,
   });
 
@@ -17,12 +23,16 @@ class CatsState {
     final List<Cat>? cats,
     final List<Cat>? favourites,
     final bool? isLoading,
+    final CatsStatus? status,
+    final bool? hasReachedMax,
     final dynamic error,
   }) {
     return CatsState(
       cats: cats ?? this.cats,
       favourites: favourites ?? this.favourites,
       isLoading: isLoading ?? this.isLoading,
+      status: status ?? this.status,
+      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
       error: error,
     );
   }

@@ -76,7 +76,7 @@ class DB {
       });
 
       // await db.close();
-      print('FROM DATABASE: $catsList');
+      // print('FROM DATABASE: $catsList');         //Print Cats
       return catsList;
     } catch (e) {
       print(e);

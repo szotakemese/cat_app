@@ -25,7 +25,16 @@ class ListItem extends StatelessWidget {
     // final _dataService = DataService();
     // final cat = state.cats.firstWhere((cat) => cat.id == state.cats[index].id,
     // orElse: () => null);
+
     final cat = listType.firstWhere((cat) => cat.id == listType[index].id);
+    if (listType == state.cats) {
+      final likedCat = state.favourites.firstWhere(
+          (catInList) => catInList.id == cat.id,
+          orElse: () => null);
+      if (likedCat != null) {
+        cat.isFav = true;
+      }
+    }
 
     return Card(
       child: Padding(
