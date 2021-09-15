@@ -29,17 +29,19 @@ class FavouritesScreen extends StatelessWidget {
         } else if (state.status == CatsStatus.succes) {
           return FavouritesList(state);
           // return CatsList(state);
-        } else if (state.error) {
+        } else if (state.status == CatsStatus.failure) {
           return Padding(
             padding: const EdgeInsets.all(30.0),
             child: Center(
-              child: Text(
-                'Error occured ${state.error}',
-                style: TextStyle(fontSize: 18),
-              ),
+              child: (state.cats.isEmpty && state.error.osError.errorCode == 7)
+                  ? Text('No internet connection')
+                  : Text(
+                      'Error occured: ${state.error}',
+                      style: TextStyle(fontSize: 18),
+                    ),
             ),
           );
-        } else {
+        }  else {
           return Container();
         }
       }),

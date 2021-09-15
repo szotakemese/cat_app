@@ -20,19 +20,6 @@ class DB {
     );
     print('DB opened');
   }
-  // Future openDB() async {
-  //   WidgetsFlutterBinding.ensureInitialized();
-  //   final Future<Database> database = openDatabase(
-  //     join(await getDatabasesPath(), 'cat_database.db'),
-  //     onCreate: (db, version) {
-  //       return db.execute(
-  //         'CREATE TABLE cats(id TEXT PRIMARY KEY, url TEXT, isFav BIT)',
-  //       );
-  //     },
-  //     version: 1,
-  //   );
-  //   return database;
-  // }
 
   // Function that inserts cats into the database
   Future<void> insertCatToDb(Cat cat) async {
@@ -76,7 +63,7 @@ class DB {
       });
 
       // await db.close();
-      // print('FROM DATABASE: $catsList');         //Print Cats
+      print('FROM DATABASE (${catsList.length}) : $catsList');         //Print Cats
       return catsList;
     } catch (e) {
       print(e);

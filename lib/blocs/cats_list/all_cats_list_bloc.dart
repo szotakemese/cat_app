@@ -27,6 +27,7 @@ class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
         );
         // yield LoadedCatsState(cats: cats);
       } catch (e) {
+        print('AllCatsListBLoC Failure');
         yield state.copyWith(
           status: CatsStatus.failure,
           error: e,

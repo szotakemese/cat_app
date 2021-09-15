@@ -27,12 +27,13 @@ class DataService {
       final allCats = jsonDecode(response.body) as List;
       final cats = allCats.map((cat) => Cat.allCatFromJson(cat)).toList();
       // print('All: $cats');
-      // cats.forEach((cat) async => await dataBase.insertCatToDb(cat));    //+++++++++++++++++++
-      await dataBase.getCatsFromDb();
+      cats.forEach((cat) async => await dataBase.insertCatToDb(cat));    //Save loaded Cats in Database
+      // await dataBase.getCatsFromDb();
 
       return cats;
     } catch (err) {
-      throw err;
+      // throw err;
+      return await dataBase.getCatsFromDb();
     }
   }
 
