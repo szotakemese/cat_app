@@ -10,10 +10,11 @@ import '../widgets/widgets.dart';
 import 'package:cat_app/auth/auth.dart';
 // import 'package:cat_app/data_service.dart';
 
+import 'package:cached_network_image/cached_network_image.dart';
+
 class CatDetailScreen extends StatelessWidget {
   final Cat cat;
-  final int index;
-  const CatDetailScreen({Key? key, required this.cat, required this.index}) : super(key: key);
+  const CatDetailScreen({Key? key, required this.cat}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +29,13 @@ class CatDetailScreen extends StatelessWidget {
           children: [
             Material(child: Hero(
               tag: cat.id,
-              child: Image.network(
-                cat.url,
-                fit: BoxFit.fitWidth,
+              // child: Image.network(
+              //   cat.url,
+              //   fit: BoxFit.fitWidth,
+              // ),
+              child: CachedNetworkImage(
+                imageUrl: cat.url,
+                errorWidget: (context, url, error) => new Icon(Icons.error),
               ),
             ),),
             Container(
@@ -69,7 +74,7 @@ class CatDetailScreen extends StatelessWidget {
                 //   user.id,
                 // );
                 BlocProvider.of<AllCatsListBloc>(context).add(
-                  CatAddedToFavs(catId: cat.id, userId: user.id),
+                  CatAddedToFavs(cat: cat, userId: user.id),
                 );
               } else {
                 print('==============DELETE FROM FAVOURITES===============');

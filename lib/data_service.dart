@@ -27,13 +27,15 @@ class DataService {
       final allCats = jsonDecode(response.body) as List;
       final cats = allCats.map((cat) => Cat.allCatFromJson(cat)).toList();
       // print('All: $cats');
-      cats.forEach((cat) async => await dataBase.insertCatToDb(cat));    //Save loaded Cats in Database
+      cats.forEach((cat) async =>
+          await dataBase.insertCatToDb(cat)); //Save loaded Cats in Database
       // await dataBase.getCatsFromDb();
 
       return cats;
     } catch (err) {
       // throw err;
-      return await dataBase.getCatsFromDb();
+      final cats = await dataBase.getCatsFromDb(page, limit);
+      return cats;
     }
   }
 
@@ -51,7 +53,9 @@ class DataService {
       // print('Favourites: $cats');
       return cats;
     } catch (err) {
-      throw err;
+      // throw err;
+      final cats = await dataBase.getFavCatsFromDb();
+      return cats;
     }
   }
 
@@ -82,7 +86,7 @@ class DataService {
   //   }
   // }
 
-  Future<Favourite> setFav(imageId, subId) async {
+  Future<Favourite> setFav(cat, userId) async {
     try {
       final response = await http.post(
         Uri.parse(catsListUrl + '/favourites'),
@@ -91,30 +95,17 @@ class DataService {
           "Content-Type": "application/json"
         },
         body: jsonEncode(<String, String>{
-          'image_id': imageId,
-          'sub_id': subId,
+          'image_id': cat.id,
+          'sub_id': userId,
         }),
       );
+      await dataBase.updateCatFavStatus(cat);
       return Favourite.fromJson(jsonDecode(response.body));
     } catch (err) {
       throw err;
     }
   }
 
-  // Future<Favourite> deleteFav(favId) async {
-  //   try {
-  //     final response = await http.delete(
-  //       Uri.parse(catsListUrl + '/favourites/$favId'),
-  //       headers: {
-  //         "x-api-key": "44ae0849-4728-4144-a8ac-223564215798",
-  //         "Content-Type": "application/json"
-  //       },
-  //     );
-  //     return Favourite.fromJson(jsonDecode(response.body));
-  //   } catch (err) {
-  //     throw err;
-  //   }
-  // }
   Future<void> deleteFav(favId) async {
     try {
       final favsList = await http.get(
@@ -147,19 +138,20 @@ class DataService {
     }
   }
 
-  // Future<List<dynamic>> favsList() async {
+  // Future<bool> checkConnection() async {
+  //   bool hasConnection;
+
   //   try {
-  //     final favsList = await http.get(
-  //       Uri.parse(catsListUrl + '/favourites'),
-  //       headers: {
-  //         "x-api-key": "44ae0849-4728-4144-a8ac-223564215798",
-  //         "Content-Type": "application/json"
-  //       },
-  //     );
-  //     final favCats = jsonDecode(favsList.body) as List;
-  //     return favCats;
-  //   } catch (err) {
-  //     throw err;
+  //     final result = await InternetAddress.lookup('google.com');
+  //     if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+  //       hasConnection = true;
+  //     } else {
+  //       hasConnection = false;
+  //     }
+  //   } on SocketException catch (_) {
+  //     hasConnection = false;
   //   }
+
+  //   return hasConnection;
   // }
 }

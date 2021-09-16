@@ -33,7 +33,7 @@ class FavouritesScreen extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.all(30.0),
             child: Center(
-              child: (state.cats.isEmpty && state.error.osError.errorCode == 7)
+              child: (state.favourites.isEmpty && state.error.osError.errorCode == 7)
                   ? Text('No internet connection')
                   : Text(
                       'Error occured: ${state.error}',

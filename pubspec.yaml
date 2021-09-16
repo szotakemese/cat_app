@@ -44,11 +44,12 @@ dependencies:
   very_good_analysis: ^2.1.0
   sqflite: ^2.0.0+4
   path: ^1.8.0
+  cached_network_image: ^3.1.0
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.0
 
 # dependency_overrides:
 #   cat_app_core:

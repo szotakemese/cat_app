@@ -7,32 +7,6 @@ import 'package:cat_app/blocs/cats_list/all_cats_list_bloc.dart';
 import 'package:cat_app/blocs/cats_list/cats_event.dart';
 import 'package:cat_app/widgets/widgets.dart';
 
-// class CatsList extends StatelessWidget {
-//   final state;
-//   const CatsList(this.state);
-//   @override
-//   Widget build(BuildContext context) {
-//     return state.cats.length == 0
-//         ? Center(
-//             child: Text('Cats List is empty'),
-//           )
-//         : ListView.builder(
-//             itemCount: state.cats.length,
-//             itemBuilder: (context, index) {
-//               return ListItem(
-//                 key: Key(
-//                   index.toString(),
-//                 ),
-//                 state: state,
-//                 index: index,
-//                 listType: state.cats,
-//               );
-//               // return ListItem(key: Key(index.toString()), state: state, index: index,);
-//             },
-//           );
-//   }
-// }
-
 class CatsList extends StatefulWidget {
   CatsList();
 
@@ -78,9 +52,9 @@ class _CatsListState extends State<CatsList> {
                         key: Key(
                           index.toString(),
                         ),
-                        state: state,
-                        index: index,
-                        listType: state.cats,
+                        cat: state.cats[index],
+                        // index: index,
+                        // listType: state.cats,
                       );
               },
               itemCount: state.hasReachedMax

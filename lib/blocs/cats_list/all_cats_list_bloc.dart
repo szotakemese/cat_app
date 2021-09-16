@@ -1,33 +1,38 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../data_service.dart';
 import 'cats_event.dart';
 import 'cats_state.dart';
 
 import 'package:cat_app/models/models.dart';
 
 class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
-  final dataService;
+  final DataService dataService;
   AllCatsListBloc(this.dataService) : super(CatsState());
 
+  bool isOnline = false;
   @override
   Stream<CatsState> mapEventToState(CatsEvent event) async* {
     if (event is LoadAllCatsEvent) {
       yield state.copyWith(
         status: CatsStatus.initial,
-        // isLoaded: true,
       );
       try {
         final cats = await dataService.getAllCats(0);
         final favourites = await dataService.getFavCats(event.userId);
+        cats.forEach((cat) {
+          favourites.forEach((favCat) {
+            if (favCat.id == cat.id) cat.isFav = true;
+          });
+        });
         yield state.copyWith(
           cats: cats,
           favourites: favourites,
           status: CatsStatus.succes,
-          // isLoaded: false,
+          isLoading: false,
         );
         // yield LoadedCatsState(cats: cats);
       } catch (e) {
-        print('AllCatsListBLoC Failure');
         yield state.copyWith(
           status: CatsStatus.failure,
           error: e,
@@ -83,11 +88,12 @@ class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
 
   Stream<CatsState> mapCatAddedToFavsToState(CatAddedToFavs event) async* {
     try {
-      final catId = event.catId;
+      final cat = event.cat;
       final userId = event.userId;
-      await dataService.setFav(catId, userId);
+      await dataService.setFav(cat, userId);
 
-      Cat currentCat = state.cats.firstWhere((element) => element.id == catId);
+      Cat currentCat = state.cats.firstWhere((element) => element.id == cat.id);
+      currentCat.isFav = true;
 
       List<Cat> favourites = state.favourites;
       favourites.add(currentCat);
@@ -104,6 +110,7 @@ class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
       final catId = event.catId;
       Cat currentCat =
           state.favourites.firstWhere((element) => element.id == catId);
+      currentCat.isFav = false;
 
       List<Cat> favourites = state.favourites;
 
@@ -116,19 +123,3 @@ class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
     }
   }
 }
-
-// class FavCatsListBloc extends AllCatsListBloc {
-//   @override
-//   Stream<CatsState> mapEventToState(CatsEvent event) async* {
-//     if (event is LoadFavCatsEvent || event is RefreshFavCatsEvent) {
-//       yield LoadingCatsState();
-
-//       try {
-//         final cats = await _dataService.getFavCats();
-//         yield LoadedCatsState(cats: cats);
-//       } catch (e) {
-//         yield FailedLoadCatsState(error: e);
-//       }
-//     } else if (event is CatUpdated) yield* mapCatUpdatedToState(event);
-//   }
-// }
