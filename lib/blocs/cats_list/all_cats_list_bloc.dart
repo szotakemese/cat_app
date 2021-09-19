@@ -20,18 +20,20 @@ class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
       try {
         final cats = await dataService.getAllCats(0);
         final favourites = await dataService.getFavCats(event.userId);
+        final facts = await dataService.getFacts();
         cats.forEach((cat) {
           favourites.forEach((favCat) {
             if (favCat.id == cat.id) cat.isFav = true;
           });
         });
+        await dataService.saveInDB(cats);
         yield state.copyWith(
           cats: cats,
           favourites: favourites,
+          facts: facts,
           status: CatsStatus.succes,
           isLoading: false,
         );
-        // yield LoadedCatsState(cats: cats);
       } catch (e) {
         yield state.copyWith(
           status: CatsStatus.failure,
@@ -56,13 +58,23 @@ class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
       try {
         yield state.copyWith(isLoading: true);
         final moreCats = await dataService.getAllCats(event.page);
+        final moreFacts = await dataService.getFacts();
+        moreCats.forEach((cat) {
+          state.favourites.forEach((favCat) {
+            if (favCat.id == cat.id) cat.isFav = true;
+          });
+        });
 
         List<Cat> cats = state.cats + moreCats;
+        List<CatFact> facts = state.facts + moreFacts;
+
+        await dataService.saveInDB(moreCats);
         yield moreCats.isEmpty
             ? state.copyWith(hasReachedMax: true, isLoading: true)
             : state.copyWith(
                 status: CatsStatus.succes,
                 cats: cats,
+                facts: facts,
                 hasReachedMax: false,
                 isLoading: false,
               );
@@ -94,6 +106,7 @@ class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
 
       Cat currentCat = state.cats.firstWhere((element) => element.id == cat.id);
       currentCat.isFav = true;
+      await dataService.updateInDB(cat);
 
       List<Cat> favourites = state.favourites;
       favourites.add(currentCat);

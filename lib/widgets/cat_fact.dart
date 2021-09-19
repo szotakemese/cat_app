@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class CatFactWidget extends StatelessWidget {
   final state;
-  const CatFactWidget(this.state);
+  final int index;
+  const CatFactWidget(this.state, this.index);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -20,7 +21,7 @@ class CatFactWidget extends StatelessWidget {
             textAlign: TextAlign.left,
           ),
           Text(
-            state.catFact.fact,
+            state.facts[index].fact,
             style: TextStyle(fontSize: 18),
             textAlign: TextAlign.justify,
           ),

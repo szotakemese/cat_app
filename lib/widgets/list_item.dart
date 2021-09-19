@@ -11,13 +11,13 @@ class ListItem extends StatelessWidget {
   const ListItem({
     Key? key,
     // required this.state,
-    // required this.index,
+    required this.index,
     // required this.listType,
     required this.cat,
   }) : super(key: key);
 
   // final state;
-  // final index;
+  final index;
   // final listType;
   final cat;
 
@@ -47,12 +47,12 @@ class ListItem extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) => CatDetailScreen(
                     cat: cat,
+                    index: index,
                   ),
                 ),
               );
               // BlocProvider.of<NavCubit>(context)
               //     .showCatDetails(state.cats[index]);
-              BlocProvider.of<CatFactsBloc>(context).add(LoadCatFactsEvent());
               print('Action: Open Details Screen');
             },
             leading: Container(

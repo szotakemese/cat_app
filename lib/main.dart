@@ -76,12 +76,6 @@ class CatsApp extends StatelessWidget {
             BlocProvider(
               create: (_) => AllCatsListBloc(context.read<DataService>())..add(LoadAllCatsEvent(user.id)),
             ),
-            // BlocProvider(
-            //   create: (_) => FavCatsListBloc()..add(LoadFavCatsEvent()),
-            // ),
-            BlocProvider(
-              create: (_) => CatFactsBloc(context.read<DataService>())..add(LoadCatFactsEvent()),
-            ),
           ],
           child: child!,
         );

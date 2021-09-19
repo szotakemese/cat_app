@@ -53,7 +53,7 @@ class _CatsListState extends State<CatsList> {
                           index.toString(),
                         ),
                         cat: state.cats[index],
-                        // index: index,
+                        index: index,
                         // listType: state.cats,
                       );
               },

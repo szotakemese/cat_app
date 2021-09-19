@@ -27,9 +27,6 @@ class DataService {
       final allCats = jsonDecode(response.body) as List;
       final cats = allCats.map((cat) => Cat.allCatFromJson(cat)).toList();
       // print('All: $cats');
-      cats.forEach((cat) async =>
-          await dataBase.insertCatToDb(cat)); //Save loaded Cats in Database
-      // await dataBase.getCatsFromDb();
 
       return cats;
     } catch (err) {
@@ -37,6 +34,11 @@ class DataService {
       final cats = await dataBase.getCatsFromDb(page, limit);
       return cats;
     }
+  }
+
+  Future<void> saveInDB(cats) async {
+    cats.forEach((cat) async =>
+        await dataBase.insertCatToDb(cat)); //Save loaded Cats in Database
   }
 
   Future<List<Cat>> getFavCats(userId) async {
@@ -59,34 +61,22 @@ class DataService {
     }
   }
 
-  Future<CatFact> getFact() async {
+  Future<List<CatFact>> getFacts() async {
     try {
       final response = await http.get(
-        Uri.parse(catFactsUrl + '/fact'),
+        Uri.parse(catFactsUrl + '/facts?limit=$limit'),
       );
-      final randomFact = jsonDecode(response.body);
-      final catFact = CatFact.fromJson(randomFact);
-      return catFact;
+      final randomFacts = jsonDecode(response.body)['data'] as List;
+      final catFacts =
+          randomFacts.map((fact) => CatFact.fromJson(fact)).toList();
+      return catFacts;
     } catch (err) {
       throw err;
     }
   }
 
-  // Future<List<CatFact>> getFacts() async {
-  //   try {
-  //     final response = await http.get(
-  //       Uri.parse(catFactsUrl + '/facts?limit=20'),
-  //     );
-  //     final randomFacts = jsonDecode(response.body) as List;
-  //     print('Facts: $randomFacts');
-  //     final catFacts = randomFacts.map((fact) => CatFact.fromJson(fact)).toList();
-  //     return catFacts;
-  //   } catch (err) {
-  //     throw err;
-  //   }
-  // }
-
   Future<Favourite> setFav(cat, userId) async {
+    print('ACTION');
     try {
       final response = await http.post(
         Uri.parse(catsListUrl + '/favourites'),
@@ -99,11 +89,17 @@ class DataService {
           'sub_id': userId,
         }),
       );
-      await dataBase.updateCatFavStatus(cat);
+      // print(await dataBase.getById(cat));
+
       return Favourite.fromJson(jsonDecode(response.body));
     } catch (err) {
       throw err;
     }
+  }
+
+  Future<void> updateInDB(Cat cat) async {
+    final dbStatus = await dataBase.updateCatFavStatus(cat);
+    print(dbStatus);
   }
 
   Future<void> deleteFav(favId) async {

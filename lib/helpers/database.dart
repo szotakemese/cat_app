@@ -58,17 +58,24 @@ class DB {
         return Cat(
           id: maps[i]['id'],
           url: maps[i]['url'],
-          isFav: (maps[i]['isFav'] == 1) ? true : false,
+          isFav: maps[i]['isFav'] == 1,
         );
       });
 
       final int pagination = page * limit;
+      int start = 0;
+      int end = start;
+
+      if (catsList.length >= pagination) {
+        start = pagination;
+        if (catsList.length >= pagination + limit) {
+          end = pagination + limit;
+        } else end = catsList.length;
+      }
+      List<Cat> subList = catsList.sublist(start, end);
+
       // await db.close();
       // print('FROM DATABASE (${catsList.length}) : $catsList'); //Print Cats
-      List<Cat> subList = [];
-      if (catsList.length >= pagination) {
-        subList = catsList.sublist(pagination, (pagination + limit));
-      }
 
       return subList;
     } catch (e) {
@@ -109,16 +116,40 @@ class DB {
   }
 
   // Function that updates cat's favourite status in the database
-  Future<void> updateCatFavStatus(Cat cat) async {
+  Future<int> updateCatFavStatus(Cat cat) async {
     try {
-      await db!.update(
+      return await db!.update(
         'cats',
         cat.toMap(),
         where: "id = ?",
         whereArgs: [cat.id],
       );
-      print(
-          'Favourite status for ${cat.id} in database was set to ${cat.isFav}');
+    } catch (e) {
+      print(e);
+      return 0;
+      // throw e;
+    }
+  }
+
+  Future<void> getById(Cat cat) async {
+    try {
+      final List<Map<String, dynamic>> maps =
+          await db!.query('cats', where: 'id == ${cat.id}');
+
+      // Convert the List<Map<String, dynamic> into a List<Cat>.
+      final List<Cat> catsList = List.generate(maps.length, (i) {
+        return Cat(
+          id: maps[i]['id'],
+          url: maps[i]['url'],
+          isFav: maps[i]['isFav'] == 1,
+        );
+      });
+
+      print(catsList);
+
+      // await db.close();
+      // print('FROM DATABASE (${catsList.length}) : $catsList'); //Print Cats
+
     } catch (e) {
       print(e);
       // throw e;

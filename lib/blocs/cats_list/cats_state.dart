@@ -5,6 +5,7 @@ enum CatsStatus { initial, loading, succes, failure }
 class CatsState {
   final List<Cat> cats;
   final List<Cat> favourites;
+  final List<CatFact> facts;
   final bool isLoading;
   final CatsStatus status;
   final bool hasReachedMax;
@@ -13,6 +14,7 @@ class CatsState {
   CatsState({
     this.cats = const <Cat>[],
     this.favourites = const <Cat>[],
+    this.facts = const <CatFact>[],
     this.isLoading = false,
     this.status = CatsStatus.initial,
     this.hasReachedMax = false,
@@ -22,6 +24,7 @@ class CatsState {
   CatsState copyWith({
     final List<Cat>? cats,
     final List<Cat>? favourites,
+    final List<CatFact>? facts,
     final bool? isLoading,
     final CatsStatus? status,
     final bool? hasReachedMax,
@@ -30,6 +33,7 @@ class CatsState {
     return CatsState(
       cats: cats ?? this.cats,
       favourites: favourites ?? this.favourites,
+      facts: facts ?? this.facts,
       isLoading: isLoading ?? this.isLoading,
       status: status ?? this.status,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
