@@ -7,7 +7,7 @@ import './models/models.dart';
 class DataService {
   final catsListUrl = 'https://api.thecatapi.com/v1';
   final catFactsUrl = 'https://catfact.ninja';
-  final limit = 7;
+  final limit = 8;
   final order = 'asc';
 
   final DB dataBase;
@@ -31,12 +31,14 @@ class DataService {
       return cats;
     } catch (err) {
       // throw err;
+      print(err);
       final cats = await dataBase.getCatsFromDb(page, limit);
+      
       return cats;
     }
   }
 
-  Future<void> saveInDB(cats) async {
+  Future<void> saveCatsInDB(cats) async {
     cats.forEach((cat) async =>
         await dataBase.insertCatToDb(cat)); //Save loaded Cats in Database
   }
@@ -56,6 +58,7 @@ class DataService {
       return cats;
     } catch (err) {
       // throw err;
+      print(err);
       final cats = await dataBase.getFavCatsFromDb();
       return cats;
     }
@@ -71,8 +74,14 @@ class DataService {
           randomFacts.map((fact) => CatFact.fromJson(fact)).toList();
       return catFacts;
     } catch (err) {
-      throw err;
+      final catFacts = await dataBase.getFactsFromDb();
+      return catFacts;
     }
+  }
+
+  Future<void> saveFactsInDB(facts) async {
+    facts.forEach((fact) async =>
+        await dataBase.insertFactToDb(fact)); //Save loaded facts in Database
   }
 
   Future<Favourite> setFav(cat, userId) async {

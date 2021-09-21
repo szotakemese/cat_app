@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cache/cache.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
@@ -79,7 +80,12 @@ class AuthenticationRepository {
         idToken: googleAuth?.idToken,
       );
       await _firebaseAuth.signInWithCredential(authCredential);
-    } on Exception catch (e) {
+    } catch (e) {
+      print("err: $e");
+      if(e is PlatformException){
+        if(e.code == "network_error") throw LogInWithGoogleFailure("No internet connection");
+        throw LogInWithGoogleFailure(e.code);
+      }
       throw LogInWithGoogleFailure(e);
     }
   }

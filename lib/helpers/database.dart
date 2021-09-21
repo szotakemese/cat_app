@@ -12,8 +12,11 @@ class DB {
     db = await openDatabase(
       join(await getDatabasesPath(), 'cat_database.db'),
       onCreate: (Database db, version) {
-        return db.execute(
+        db.execute(
           'CREATE TABLE cats(id TEXT PRIMARY KEY, url TEXT, isFav BIT)',
+        );
+        db.execute(
+          'CREATE TABLE facts(fact TEXT PRIMARY KEY, length INTEGER)',
         );
       },
       version: 1,
@@ -44,6 +47,38 @@ class DB {
     // await db.close();
   }
 
+  Future<void> insertFactToDb(CatFact fact) async {
+    try {
+      await db!.insert(
+        'facts',
+        fact.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    } catch (e) {
+      print(e);
+      // throw e;
+    }
+  }
+
+  Future<List<CatFact>> getFactsFromDb() async {
+    try {
+      final List<Map<String, dynamic>> maps = await db!.query('facts');
+      final List<CatFact> factsList = List.generate(maps.length, (i) {
+        return CatFact(
+          fact: maps[i]['fact'],
+          length: maps[i]['length'],
+        );
+      });
+
+      return factsList;
+    } catch (e) {
+      print(e);
+      return [];
+      // throw e;
+    }
+  }
+
+
   // A method that retrieves all the cats from the cats table.
   Future<List<Cat>> getCatsFromDb(int page, int limit) async {
     // Get a reference to the database.
@@ -51,7 +86,12 @@ class DB {
 
     // Query the table for all the cats.
     try {
-      final List<Map<String, dynamic>> maps = await db!.query('cats');
+      final List<Map<String, dynamic>> maps = await db!.query(
+        'cats',
+        orderBy: "id ASC",
+        limit: limit,
+        offset: page*limit,
+      );
 
       // Convert the List<Map<String, dynamic> into a List<Cat>.
       final List<Cat> catsList = List.generate(maps.length, (i) {
@@ -62,22 +102,26 @@ class DB {
         );
       });
 
-      final int pagination = page * limit;
-      int start = 0;
-      int end = start;
+      // final int pagination = page * limit;
+      // int start = 0;
+      // int end = start;
 
-      if (catsList.length >= pagination) {
-        start = pagination;
-        if (catsList.length >= pagination + limit) {
-          end = pagination + limit;
-        } else end = catsList.length;
-      }
-      List<Cat> subList = catsList.sublist(start, end);
+      // if (catsList.length >= pagination) {
+      //   start = pagination;
+      //   if (catsList.length >= pagination + limit) {
+      //     end = pagination + limit;
+      //   } else
+      //     end = catsList.length;
+      // }
+      // List<Cat> subList = catsList.sublist(start, end);
+
+      List<String> onlyId = [];
+      catsList.forEach((e) => onlyId.add(e.id));
+
+      print('FROM DATABASE (${catsList.length}) : $onlyId'); //Print Cats
 
       // await db.close();
-      // print('FROM DATABASE (${catsList.length}) : $catsList'); //Print Cats
-
-      return subList;
+      return catsList;
     } catch (e) {
       print(e);
       return [];
@@ -127,31 +171,6 @@ class DB {
     } catch (e) {
       print(e);
       return 0;
-      // throw e;
-    }
-  }
-
-  Future<void> getById(Cat cat) async {
-    try {
-      final List<Map<String, dynamic>> maps =
-          await db!.query('cats', where: 'id == ${cat.id}');
-
-      // Convert the List<Map<String, dynamic> into a List<Cat>.
-      final List<Cat> catsList = List.generate(maps.length, (i) {
-        return Cat(
-          id: maps[i]['id'],
-          url: maps[i]['url'],
-          isFav: maps[i]['isFav'] == 1,
-        );
-      });
-
-      print(catsList);
-
-      // await db.close();
-      // print('FROM DATABASE (${catsList.length}) : $catsList'); //Print Cats
-
-    } catch (e) {
-      print(e);
       // throw e;
     }
   }

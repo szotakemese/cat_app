@@ -10,4 +10,11 @@ class CatFact {
         fact: json['fact'],
         length: json['length'],
       );
+
+  Map<String, dynamic> toMap() {
+    return {
+      'fact': fact,
+      'length': length,
+    };
+  }
 }

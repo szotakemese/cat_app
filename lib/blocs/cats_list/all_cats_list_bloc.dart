@@ -26,7 +26,8 @@ class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
             if (favCat.id == cat.id) cat.isFav = true;
           });
         });
-        await dataService.saveInDB(cats);
+        await dataService.saveCatsInDB(cats);
+        await dataService.saveFactsInDB(facts);
         yield state.copyWith(
           cats: cats,
           favourites: favourites,
@@ -42,8 +43,6 @@ class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
       }
     } else if (event is LoadMoreCats) {
       yield* mapLoadMoreCatsToState(event);
-    } else if (event is CatUpdated) {
-      yield* mapCatUpdatedToState(event);
     } else if (event is CatAddedToFavs) {
       yield* mapCatAddedToFavsToState(event);
     } else if (event is CatDeletedFromFavs) {
@@ -68,7 +67,7 @@ class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
         List<Cat> cats = state.cats + moreCats;
         List<CatFact> facts = state.facts + moreFacts;
 
-        await dataService.saveInDB(moreCats);
+        await dataService.saveCatsInDB(moreCats);
         yield moreCats.isEmpty
             ? state.copyWith(hasReachedMax: true, isLoading: true)
             : state.copyWith(
@@ -85,19 +84,6 @@ class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
     }
   }
 
-  Stream<CatsState> mapCatUpdatedToState(CatUpdated event) async* {
-    final List<Cat> updatedCats = state.cats.map((cat) {
-      return cat.id == event.cat.id ? event.cat : cat;
-    }).toList();
-    final List<Cat> updatedFavourites = state.favourites.map((cat) {
-      return cat.id == event.cat.id ? event.cat : cat;
-    }).toList();
-    yield state.copyWith(
-      cats: updatedCats,
-      favourites: updatedFavourites,
-    );
-  }
-
   Stream<CatsState> mapCatAddedToFavsToState(CatAddedToFavs event) async* {
     try {
       final cat = event.cat;
@@ -106,7 +92,7 @@ class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
 
       Cat currentCat = state.cats.firstWhere((element) => element.id == cat.id);
       currentCat.isFav = true;
-      await dataService.updateInDB(cat);
+      await dataService.updateInDB(currentCat);
 
       List<Cat> favourites = state.favourites;
       favourites.add(currentCat);
@@ -120,17 +106,24 @@ class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
   Stream<CatsState> mapCatDeletedFromFavsToState(
       CatDeletedFromFavs event) async* {
     try {
-      final catId = event.catId;
-      Cat currentCat =
-          state.favourites.firstWhere((element) => element.id == catId);
-      currentCat.isFav = false;
-
+      List<Cat> cats = state.cats;
       List<Cat> favourites = state.favourites;
 
-      await dataService.deleteFav(catId);
-      favourites.remove(currentCat);
+      final catIndex = cats.indexWhere((element) => element.id == event.cat.id);
+      if (catIndex != -1) {
+        cats[catIndex].isFav = false;
+      }
 
-      yield state.copyWith(favourites: favourites);
+      await dataService.deleteFav(event.cat.id);
+      favourites.removeWhere((element) => element.id == event.cat.id);
+
+      await dataService
+          .updateInDB(Cat(id: event.cat.id, url: event.cat.url, isFav: false));
+
+      yield state.copyWith(
+        cats: cats,
+        favourites: favourites,
+      );
     } catch (e) {
       print(e);
     }

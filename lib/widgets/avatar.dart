@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 const _avatarSize = 48.0;
@@ -12,7 +13,7 @@ class Avatar extends StatelessWidget {
     final photo = this.photo;
     return CircleAvatar(
       radius: _avatarSize,
-      backgroundImage: photo != null ? NetworkImage(photo) : null,
+      backgroundImage: photo != null ? CachedNetworkImageProvider(photo) : null,
       child: photo == null
           ? const Icon(Icons.person_outline, size: _avatarSize)
           : null,

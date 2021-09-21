@@ -15,18 +15,6 @@ import './helpers/navigation.dart';
 
 import 'package:cat_app/helpers/database.dart';
 
-// void main() {
-//   Bloc.observer = SimpleBlocObserver();
-//   runApp(
-//     BlocProvider(
-//       create: (context) {
-//         return AllCatsBloc();
-//       },
-//       child: CatsApp(),
-//     ),
-//   );
-// }
-
 void main() async {
   Bloc.observer = AppBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();

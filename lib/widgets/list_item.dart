@@ -17,9 +17,9 @@ class ListItem extends StatelessWidget {
   }) : super(key: key);
 
   // final state;
-  final index;
+  final int index;
   // final listType;
-  final cat;
+  final Cat cat;
 
   @override
   Widget build(BuildContext context) {
@@ -78,31 +78,17 @@ class ListItem extends StatelessWidget {
               onPressed: () {
                 if (!cat.isFav) {
                   print('==============ADD TO FAVOURITES===============');
-                  // _dataService.setFav(
-                  //   cat.id,
-                  //   user.id,
-                  // );
                   BlocProvider.of<AllCatsListBloc>(context).add(
                     CatAddedToFavs(cat: cat, userId: user.id),
                   );
-                  
                 } else {
                   print('==============DELETE FROM FAVOURITES===============');
-                  // print('ID: ${cat.id}');
-                  // _dataService.deleteFav(
-                  //   cat.id,
-                  // );
                   BlocProvider.of<AllCatsListBloc>(context).add(
-                    CatDeletedFromFavs(catId: cat.id),
+                    CatDeletedFromFavs(cat: cat),
                   );
                 }
 
                 print('STATUS FOR ${cat.id} was ${cat.isFav}');
-                BlocProvider.of<AllCatsListBloc>(context).add(
-                  CatUpdated(
-                    Cat(id: cat.id, url: cat.url, isFav: !cat.isFav),
-                  ),
-                );
               },
             ),
           ),

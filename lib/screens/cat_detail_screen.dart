@@ -49,7 +49,33 @@ class CatDetailScreen extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   );
                 } else if (state.status == CatsStatus.succes) {
-                  return CatFactWidget(state, index);
+                  return Column(
+                    children: [
+                      CatFactWidget(state, index),
+                      IconButton(
+                        icon: cat.isFav
+                            ? Icon(Icons.favorite)
+                            : Icon(Icons.favorite_border),
+                        color: cat.isFav ? Colors.redAccent : Colors.grey,
+                        onPressed: () {
+                          if (!cat.isFav) {
+                            print(
+                                '==============ADD TO FAVOURITES===============');
+                            BlocProvider.of<AllCatsListBloc>(context).add(
+                              CatAddedToFavs(cat: cat, userId: user.id),
+                            );
+                          } else {
+                            print(
+                                '==============DELETE FROM FAVOURITES===============');
+                            BlocProvider.of<AllCatsListBloc>(context).add(
+                              CatDeletedFromFavs(cat: cat),
+                            );
+                          }
+                          print('STATUS FOR ${cat.id} was ${cat.isFav}');
+                        },
+                      ),
+                    ],
+                  );
                 } else if (state.status == CatsStatus.failure) {
                   return Padding(
                     padding: const EdgeInsets.all(30.0),
@@ -64,40 +90,6 @@ class CatDetailScreen extends StatelessWidget {
                   return Container();
                 }
               }),
-            ),
-            IconButton(
-              icon: cat.isFav
-                  ? Icon(Icons.favorite)
-                  : Icon(Icons.favorite_border),
-              color: cat.isFav ? Colors.redAccent : Colors.grey,
-              onPressed: () {
-                if (!cat.isFav) {
-                  print('==============ADD TO FAVOURITES===============');
-                  // _dataService.setFav(
-                  //   cat.id,
-                  //   user.id,
-                  // );
-                  BlocProvider.of<AllCatsListBloc>(context).add(
-                    CatAddedToFavs(cat: cat, userId: user.id),
-                  );
-                } else {
-                  print('==============DELETE FROM FAVOURITES===============');
-                  // print('ID: ${cat.id}');
-                  // _dataService.deleteFav(
-                  //   cat.id,
-                  // );
-                  BlocProvider.of<AllCatsListBloc>(context).add(
-                    CatDeletedFromFavs(catId: cat.id),
-                  );
-                }
-
-                print('STATUS FOR ${cat.id} was ${cat.isFav}');
-                // BlocProvider.of<AllCatsListBloc>(context).add(
-                //   CatUpdated(
-                //     Cat(id: cat.id, url: cat.url, isFav: !cat.isFav),
-                //   ),
-                // );
-              },
             ),
           ],
         ),

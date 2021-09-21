@@ -29,22 +29,10 @@ class CatAddedToFavs extends CatsEvent{
 }
 
 class CatDeletedFromFavs extends CatsEvent{
-  final String catId;
-
-  const CatDeletedFromFavs({required this.catId});
-
-  @override
-  String toString() => 'CatDeletedFromFavourites { deletedCat: $catId }';
-}
-
-class CatUpdated extends CatsEvent {
   final Cat cat;
 
-  const CatUpdated(this.cat);
+  const CatDeletedFromFavs({required this.cat});
 
   @override
-  List<Cat> get props => [cat];
-
-  @override
-  String toString() => 'CatUpdated { updatedCat: ${cat.id} }';
+  String toString() => 'CatDeletedFromFavourites { deletedCat: ${cat.id} }';
 }
