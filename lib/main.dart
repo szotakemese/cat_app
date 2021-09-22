@@ -1,7 +1,6 @@
 import 'package:cat_app/data_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:cat_app_core/cat_app_core.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -19,14 +18,13 @@ void main() async {
   Bloc.observer = AppBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  final authenticationRepository = AuthenticationRepository();
+  final AuthenticationRepository authenticationRepository = AuthenticationRepository();
   await authenticationRepository.user.first;
 
-  final dataBase = DB();
+  final DB dataBase = DB();
   await dataBase.openDB();
-  // await DB().openDB();
 
-  final dataService = DataService(dataBase: dataBase);
+  final DataService dataService = DataService(dataBase: dataBase);
   
   runApp(Auth(
     authenticationRepository: authenticationRepository,
@@ -41,7 +39,7 @@ class CatsApp extends StatelessWidget {
   static Page page() => const MaterialPage<void>(child: CatsApp());
   @override
   Widget build(BuildContext context) {
-    final user = context.select((AuthBloc bloc) => bloc.state.user);
+    final User user = context.select((AuthBloc bloc) => bloc.state.user);
 
     return MaterialApp(
       title: "Cat App",

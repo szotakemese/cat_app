@@ -1,3 +1,4 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,7 +20,7 @@ class CatDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.select((AuthBloc bloc) => bloc.state.user);
+    final User user = context.select((AuthBloc bloc) => bloc.state.user);
     return Scaffold(
       appBar: AppBar(
         title: Text('ID: ' + cat.id),
@@ -30,10 +31,6 @@ class CatDetailScreen extends StatelessWidget {
             Material(
               child: Hero(
                 tag: cat.id,
-                // child: Image.network(
-                //   cat.url,
-                //   fit: BoxFit.fitWidth,
-                // ),
                 child: CachedNetworkImage(
                   imageUrl: cat.url,
                   errorWidget: (context, url, error) => new Icon(Icons.error),
@@ -53,20 +50,17 @@ class CatDetailScreen extends StatelessWidget {
                     children: [
                       CatFactWidget(state, index),
                       IconButton(
-                        icon: cat.isFav
+                        icon: state.isFaved(cat)
                             ? Icon(Icons.favorite)
                             : Icon(Icons.favorite_border),
-                        color: cat.isFav ? Colors.redAccent : Colors.grey,
+                        color:
+                            state.isFaved(cat) ? Colors.redAccent : Colors.grey,
                         onPressed: () {
                           if (!cat.isFav) {
-                            print(
-                                '==============ADD TO FAVOURITES===============');
                             BlocProvider.of<AllCatsListBloc>(context).add(
                               CatAddedToFavs(cat: cat, userId: user.id),
                             );
                           } else {
-                            print(
-                                '==============DELETE FROM FAVOURITES===============');
                             BlocProvider.of<AllCatsListBloc>(context).add(
                               CatDeletedFromFavs(cat: cat),
                             );

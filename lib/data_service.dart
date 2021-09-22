@@ -5,10 +5,10 @@ import 'package:http/http.dart' as http;
 import './models/models.dart';
 
 class DataService {
-  final catsListUrl = 'https://api.thecatapi.com/v1';
-  final catFactsUrl = 'https://catfact.ninja';
-  final limit = 8;
-  final order = 'asc';
+  final String catsListUrl = 'https://api.thecatapi.com/v1';
+  final String catFactsUrl = 'https://catfact.ninja';
+  final int limit = 8;
+  final String order = 'asc';
 
   final DB dataBase;
 
@@ -16,7 +16,7 @@ class DataService {
 
   Future<List<Cat>> getAllCats(int page) async {
     try {
-      final response = await http.get(
+      final http.Response response = await http.get(
         Uri.parse(catsListUrl +
             '/images/search?limit=$limit&page=$page&order=$order'),
         headers: {
@@ -24,70 +24,67 @@ class DataService {
           "Content-Type": "application/json"
         },
       );
-      final allCats = jsonDecode(response.body) as List;
-      final cats = allCats.map((cat) => Cat.allCatFromJson(cat)).toList();
-      // print('All: $cats');
+      final List<dynamic> allCats = jsonDecode(response.body) as List;
+      final List<Cat> cats =
+          allCats.map((cat) => Cat.allCatFromJson(cat)).toList();
 
       return cats;
     } catch (err) {
-      // throw err;
       print(err);
-      final cats = await dataBase.getCatsFromDb(page, limit);
-      
+      final List<Cat> cats = await dataBase.getCatsFromDb(page, limit);
+
       return cats;
     }
   }
 
   Future<void> saveCatsInDB(cats) async {
-    cats.forEach((cat) async =>
-        await dataBase.insertCatToDb(cat)); //Save loaded Cats in Database
+    cats.forEach((cat) async => await dataBase.insertCatToDb(cat));
   }
 
   Future<List<Cat>> getFavCats(userId) async {
     try {
-      final response = await http.get(
+      final http.Response response = await http.get(
         Uri.parse(catsListUrl + '/favourites?sub_id=$userId'),
         headers: {
           "x-api-key": "44ae0849-4728-4144-a8ac-223564215798",
           "Content-Type": "application/json"
         },
       );
-      final favCats = jsonDecode(response.body) as List;
-      final cats = favCats.map((cat) => Cat.favCatFromJson(cat)).toList();
-      // print('Favourites: $cats');
+      final List<dynamic> favCats = jsonDecode(response.body) as List;
+      final List<Cat> cats =
+          favCats.map((cat) => Cat.favCatFromJson(cat)).toList();
       return cats;
     } catch (err) {
-      // throw err;
       print(err);
-      final cats = await dataBase.getFavCatsFromDb();
+      final List<Cat> cats = await dataBase.getFavCatsFromDb();
       return cats;
     }
   }
 
   Future<List<CatFact>> getFacts() async {
     try {
-      final response = await http.get(
+      final http.Response response = await http.get(
         Uri.parse(catFactsUrl + '/facts?limit=$limit'),
       );
-      final randomFacts = jsonDecode(response.body)['data'] as List;
-      final catFacts =
+      final List<dynamic> randomFacts =
+          jsonDecode(response.body)['data'] as List;
+      final List<CatFact> catFacts =
           randomFacts.map((fact) => CatFact.fromJson(fact)).toList();
       return catFacts;
     } catch (err) {
-      final catFacts = await dataBase.getFactsFromDb();
+      final List<CatFact> catFacts = await dataBase.getFactsFromDb();
       return catFacts;
     }
   }
 
   Future<void> saveFactsInDB(facts) async {
-    facts.forEach((fact) async =>
-        await dataBase.insertFactToDb(fact)); //Save loaded facts in Database
+    facts.forEach((fact) async => await dataBase.insertFactToDb(fact));
   }
 
   Future<Favourite> setFav(cat, userId) async {
     print('ACTION');
     try {
-      final response = await http.post(
+      final http.Response response = await http.post(
         Uri.parse(catsListUrl + '/favourites'),
         headers: {
           "x-api-key": "44ae0849-4728-4144-a8ac-223564215798",
@@ -98,7 +95,6 @@ class DataService {
           'sub_id': userId,
         }),
       );
-      // print(await dataBase.getById(cat));
 
       return Favourite.fromJson(jsonDecode(response.body));
     } catch (err) {
@@ -107,34 +103,33 @@ class DataService {
   }
 
   Future<void> updateInDB(Cat cat) async {
-    final dbStatus = await dataBase.updateCatFavStatus(cat);
-    print(dbStatus);
+    await dataBase.updateCatFavStatus(cat);
   }
 
   Future<void> deleteFav(favId) async {
     try {
-      final favsList = await http.get(
+      final http.Response favsList = await http.get(
         Uri.parse(catsListUrl + '/favourites'),
         headers: {
           "x-api-key": "44ae0849-4728-4144-a8ac-223564215798",
           "Content-Type": "application/json"
         },
       );
-      final favCats = jsonDecode(favsList.body) as List;
-      final currentFavCat = favCats.firstWhere(
+      final List<dynamic> favCats = jsonDecode(favsList.body) as List;
+      final dynamic currentFavCat = favCats.firstWhere(
           (element) => element['image_id'] == favId,
           orElse: () => null);
 
-      final currentFavCatId = currentFavCat['id'].toString();
+      final String currentFavCatId = currentFavCat['id'].toString();
 
-      final response = await http.delete(
+      final http.Response response = await http.delete(
         Uri.parse(catsListUrl + '/favourites/$currentFavCatId'),
         headers: {
           "x-api-key": "44ae0849-4728-4144-a8ac-223564215798",
           "Content-Type": "application/json"
         },
       );
-      final json = jsonDecode(response.body);
+      final dynamic json = jsonDecode(response.body);
       print(json);
 
       print('DELETED : $favId ');
@@ -142,21 +137,4 @@ class DataService {
       throw err;
     }
   }
-
-  // Future<bool> checkConnection() async {
-  //   bool hasConnection;
-
-  //   try {
-  //     final result = await InternetAddress.lookup('google.com');
-  //     if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-  //       hasConnection = true;
-  //     } else {
-  //       hasConnection = false;
-  //     }
-  //   } on SocketException catch (_) {
-  //     hasConnection = false;
-  //   }
-
-  //   return hasConnection;
-  // }
 }

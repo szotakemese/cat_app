@@ -32,10 +32,6 @@ dependencies:
   flow_builder: ^0.0.2
   http: ^0.13.3
   meta: ^1.1.6
-  # firebase_core: ^1.3.0
-  # google_sign_in: ^5.0.0
-  form_inputs:
-    path: packages/form_inputs
   cat_app_core:
     path: packages/cat_app_core
   formz: ^0.4.0

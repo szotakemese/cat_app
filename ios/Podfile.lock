@@ -4,6 +4,23 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
+  - FBAEMKit (11.2.1):
+    - FBAEMKit/AEM (= 11.2.1)
+  - FBAEMKit/AEM (11.2.1):
+    - FBSDKCoreKit_Basics (~> 11.2.1)
+  - FBSDKCoreKit (11.2.1):
+    - FBSDKCoreKit/Core (= 11.2.1)
+  - FBSDKCoreKit/Core (11.2.1):
+    - FBAEMKit (~> 11.2.1)
+    - FBSDKCoreKit_Basics (~> 11.2.1)
+  - FBSDKCoreKit_Basics (11.2.1):
+    - FBSDKCoreKit_Basics/Basics (= 11.2.1)
+  - FBSDKCoreKit_Basics/Basics (11.2.1)
+  - FBSDKLoginKit (11.2.1):
+    - FBSDKLoginKit/Login (= 11.2.1)
+  - FBSDKLoginKit/Login (11.2.1):
+    - FBSDKCoreKit (~> 11.2.1)
+    - FBSDKCoreKit_Basics (~> 11.2.1)
   - Firebase/Auth (8.0.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 8.0.0)
@@ -31,6 +48,12 @@ PODS:
     - GoogleUtilities/Logger (~> 7.4)
     - nanopb (~> 2.30908.0)
   - Flutter (1.0.0)
+  - flutter_login_facebook (1.1.0):
+    - FBSDKLoginKit (~> 11.1)
+    - Flutter
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
   - google_sign_in (0.0.1):
     - Flutter
     - GoogleSignIn (~> 5.0)
@@ -69,21 +92,31 @@ PODS:
   - path_provider (0.0.1):
     - Flutter
   - PromisesObjC (1.2.12)
+  - sqflite (0.0.2):
+    - Flutter
+    - FMDB (>= 2.7.5)
 
 DEPENDENCIES:
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
+  - flutter_login_facebook (from `.symlinks/plugins/flutter_login_facebook/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - sqflite (from `.symlinks/plugins/sqflite/ios`)
 
 SPEC REPOS:
-  trunk:
+  https://github.com/CocoaPods/Specs.git:
     - AppAuth
+    - FBAEMKit
+    - FBSDKCoreKit
+    - FBSDKCoreKit_Basics
+    - FBSDKLoginKit
     - Firebase
     - FirebaseAuth
     - FirebaseCore
     - FirebaseCoreDiagnostics
+    - FMDB
     - GoogleDataTransport
     - GoogleSignIn
     - GoogleUtilities
@@ -99,13 +132,21 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_core/ios"
   Flutter:
     :path: Flutter
+  flutter_login_facebook:
+    :path: ".symlinks/plugins/flutter_login_facebook/ios"
   google_sign_in:
     :path: ".symlinks/plugins/google_sign_in/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
+  sqflite:
+    :path: ".symlinks/plugins/sqflite/ios"
 
 SPEC CHECKSUMS:
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
+  FBAEMKit: 5de0a7aaa854eec69bb5be20795952a63d38a5f6
+  FBSDKCoreKit: bf655f808b040ed66a72b9922911b39d703e64f4
+  FBSDKCoreKit_Basics: 73ebe3a27eb688ac5b5aa7e99f68992993042115
+  FBSDKLoginKit: 2e76831ef08d356b8f9150ea51cce865074ea304
   Firebase: 73c3e3b216ec1ecbc54d2ffdd4670c65c749edb1
   firebase_auth: 6532658f5a4f76be32cd5e7518753ebedd4544d2
   firebase_core: cda81ae37eda6df2bc2d16027fda527987c4bd33
@@ -113,6 +154,8 @@ SPEC CHECKSUMS:
   FirebaseCore: 3f09591d51292843e2a46f18358d60bf4e996255
   FirebaseCoreDiagnostics: 3e249cee3de5c5f9cfd6cc2a19997231286fec11
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  flutter_login_facebook: b8f57fd9ad2f7cd3c3646d893f7a66c875a285dd
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   google_sign_in: 6bd214b9c154f881422f5fe27b66aaa7bbd580cc
   GoogleDataTransport: 04c3e9a480bbcaa2ec3f5d27f1cdeb6a92f20c8d
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
@@ -122,7 +165,8 @@ SPEC CHECKSUMS:
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
+  sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
 
-PODFILE CHECKSUM: fe0e1ee7f3d1f7d00b11b474b62dd62134535aea
+PODFILE CHECKSUM: 14aad2c10caa05d2b14c98986d177079ea6fed90
 
 COCOAPODS: 1.10.1

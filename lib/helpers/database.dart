@@ -24,15 +24,7 @@ class DB {
     print('DB opened');
   }
 
-  // Function that inserts cats into the database
   Future<void> insertCatToDb(Cat cat) async {
-    // final db = await openDB();
-
-    // Insert the Cat into the correct table. You might also specify the
-    // `conflictAlgorithm` to use in case the same cat is inserted twice.
-    //
-    // In this case, replace any previous data.
-
     try {
       await db!.insert(
         'cats',
@@ -41,10 +33,7 @@ class DB {
       );
     } catch (e) {
       print(e);
-      // throw e;
     }
-
-    // await db.close();
   }
 
   Future<void> insertFactToDb(CatFact fact) async {
@@ -56,7 +45,6 @@ class DB {
       );
     } catch (e) {
       print(e);
-      // throw e;
     }
   }
 
@@ -74,26 +62,18 @@ class DB {
     } catch (e) {
       print(e);
       return [];
-      // throw e;
     }
   }
 
-
-  // A method that retrieves all the cats from the cats table.
   Future<List<Cat>> getCatsFromDb(int page, int limit) async {
-    // Get a reference to the database.
-    // final db = await openDB();
-
-    // Query the table for all the cats.
     try {
       final List<Map<String, dynamic>> maps = await db!.query(
         'cats',
         orderBy: "id ASC",
         limit: limit,
-        offset: page*limit,
+        offset: page * limit,
       );
 
-      // Convert the List<Map<String, dynamic> into a List<Cat>.
       final List<Cat> catsList = List.generate(maps.length, (i) {
         return Cat(
           id: maps[i]['id'],
@@ -102,44 +82,23 @@ class DB {
         );
       });
 
-      // final int pagination = page * limit;
-      // int start = 0;
-      // int end = start;
-
-      // if (catsList.length >= pagination) {
-      //   start = pagination;
-      //   if (catsList.length >= pagination + limit) {
-      //     end = pagination + limit;
-      //   } else
-      //     end = catsList.length;
-      // }
-      // List<Cat> subList = catsList.sublist(start, end);
-
       List<String> onlyId = [];
       catsList.forEach((e) => onlyId.add(e.id));
 
-      print('FROM DATABASE (${catsList.length}) : $onlyId'); //Print Cats
+      print('FROM DATABASE (${catsList.length}) : $onlyId');
 
-      // await db.close();
       return catsList;
     } catch (e) {
       print(e);
       return [];
-      // throw e;
     }
   }
-
-  // A method that retrieves the faurite cats from the cats table.
+  
   Future<List<Cat>> getFavCatsFromDb() async {
-    // Get a reference to the database.
-    // final db = await openDB();
-
-    // Query the table for all the cats.
     try {
       final List<Map<String, dynamic>> maps =
           await db!.query('cats', where: 'isFav == 1');
 
-      // Convert the List<Map<String, dynamic> into a List<Cat>.
       final List<Cat> catsList = List.generate(maps.length, (i) {
         return Cat(
           id: maps[i]['id'],
@@ -148,18 +107,13 @@ class DB {
         );
       });
 
-      // await db.close();
-      // print('FROM DATABASE (${catsList.length}) : $catsList'); //Print Cats
-
       return catsList;
     } catch (e) {
       print(e);
       return [];
-      // throw e;
     }
   }
 
-  // Function that updates cat's favourite status in the database
   Future<int> updateCatFavStatus(Cat cat) async {
     try {
       return await db!.update(
@@ -171,7 +125,6 @@ class DB {
     } catch (e) {
       print(e);
       return 0;
-      // throw e;
     }
   }
 

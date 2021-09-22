@@ -1,7 +1,8 @@
+import 'package:cat_app/blocs/cats_list/cats_state.dart';
 import 'package:flutter/material.dart';
 
 class CatFactWidget extends StatelessWidget {
-  final state;
+  final CatsState state;
   final int index;
   const CatFactWidget(this.state, this.index);
   @override

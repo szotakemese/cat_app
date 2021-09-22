@@ -1,8 +1,9 @@
+import 'package:cat_app/blocs/cats_list/cats_state.dart';
 import 'package:flutter/material.dart';
 import 'list_item.dart';
 
 class FavouritesList extends StatelessWidget {
-  final state;
+  final CatsState state;
   const FavouritesList(this.state);
   @override
   Widget build(BuildContext context) {
@@ -15,9 +16,7 @@ class FavouritesList extends StatelessWidget {
             itemBuilder: (context, index) {
               return ListItem(
                 key: Key(index.toString()),
-                // state: state,
                 index: index,
-                // listType: state.favourites,
                 cat: state.favourites[index],
               );
             },

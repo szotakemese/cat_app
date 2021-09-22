@@ -9,15 +9,13 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
         if (state.status.isSubmissionFailure) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
-             SnackBar(content: Text(state.error.message.toString())),
+              SnackBar(content: Text(state.error.message.toString())),
             );
         }
       },
@@ -75,7 +73,6 @@ class _FacebookLoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return ElevatedButton.icon(
-      // key: const Key('loginForm_googleLogin_raisedButton'),
       label: const Text(
         'SIGN IN WITH FACEBOOK',
         style: TextStyle(color: Colors.white),
@@ -89,10 +86,7 @@ class _FacebookLoginButton extends StatelessWidget {
         fixedSize: Size(240, 50),
       ),
       icon: const Icon(FontAwesomeIcons.facebook, color: Colors.white),
-      // onPressed: () => AuthenticationRepository().logInWithFacebook(),
       onPressed: () => context.read<LoginCubit>().logInWithFacebook(),
-      // onPressed: () {},
     );
   }
 }
-

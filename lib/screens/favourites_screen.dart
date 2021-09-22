@@ -1,3 +1,4 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,7 +10,7 @@ import 'package:cat_app/auth/auth.dart';
 class FavouritesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final user = context.select((AuthBloc bloc) => bloc.state.user);
+    final User user = context.select((AuthBloc bloc) => bloc.state.user);
     return Scaffold(
       appBar: AppBar(
         title: Text('Favourites'),
@@ -28,7 +29,6 @@ class FavouritesScreen extends StatelessWidget {
           );
         } else if (state.status == CatsStatus.succes) {
           return FavouritesList(state);
-          // return CatsList(state);
         } else if (state.status == CatsStatus.failure) {
           return Padding(
             padding: const EdgeInsets.all(30.0),

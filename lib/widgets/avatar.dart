@@ -8,14 +8,6 @@ class Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final photo = this.photo;
-    // return CircleAvatar(
-    //   radius: _avatarSize,
-    //   backgroundImage: photo != null ? CachedNetworkImageProvider(photo) : null,
-    //   child: photo == null
-    //       ? const Icon(Icons.person_outline, size: _avatarSize)
-    //       : null,
-    // );
     return Container(
       child: CachedNetworkImage(
         imageUrl: photo,

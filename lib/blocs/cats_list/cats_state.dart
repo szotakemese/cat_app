@@ -21,6 +21,8 @@ class CatsState {
     this.error,
   });
 
+  bool isFaved(final Cat cat) => favourites.indexWhere((element) => element.id == cat.id) >= 0;
+
   CatsState copyWith({
     final List<Cat>? cats,
     final List<Cat>? favourites,

@@ -54,7 +54,6 @@ class _CatsListState extends State<CatsList> {
                         ),
                         cat: state.cats[index],
                         index: index,
-                        // listType: state.cats,
                       );
               },
               itemCount: state.hasReachedMax
@@ -86,8 +85,8 @@ class _CatsListState extends State<CatsList> {
 
   bool get _isBottom {
     if (!_scrollController.hasClients) return false;
-    final maxScroll = _scrollController.position.maxScrollExtent;
-    final currentScroll = _scrollController.offset;
+    final double maxScroll = _scrollController.position.maxScrollExtent;
+    final double currentScroll = _scrollController.offset;
     return currentScroll >= (maxScroll * 0.9);
   }
 }

@@ -18,9 +18,9 @@ class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
         status: CatsStatus.initial,
       );
       try {
-        final cats = await dataService.getAllCats(0);
-        final favourites = await dataService.getFavCats(event.userId);
-        final facts = await dataService.getFacts();
+        final List<Cat> cats = await dataService.getAllCats(0);
+        final List<Cat> favourites = await dataService.getFavCats(event.userId);
+        final List<CatFact> facts = await dataService.getFacts();
         cats.forEach((cat) {
           favourites.forEach((favCat) {
             if (favCat.id == cat.id) cat.isFav = true;
@@ -56,8 +56,8 @@ class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
     else {
       try {
         yield state.copyWith(isLoading: true);
-        final moreCats = await dataService.getAllCats(event.page);
-        final moreFacts = await dataService.getFacts();
+        final List<Cat> moreCats = await dataService.getAllCats(event.page);
+        final List<CatFact> moreFacts = await dataService.getFacts();
         moreCats.forEach((cat) {
           state.favourites.forEach((favCat) {
             if (favCat.id == cat.id) cat.isFav = true;
@@ -86,8 +86,8 @@ class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
 
   Stream<CatsState> mapCatAddedToFavsToState(CatAddedToFavs event) async* {
     try {
-      final cat = event.cat;
-      final userId = event.userId;
+      final Cat cat = event.cat;
+      final String userId = event.userId;
       await dataService.setFav(cat, userId);
 
       Cat currentCat = state.cats.firstWhere((element) => element.id == cat.id);
@@ -109,7 +109,8 @@ class AllCatsListBloc extends Bloc<CatsEvent, CatsState> {
       List<Cat> cats = state.cats;
       List<Cat> favourites = state.favourites;
 
-      final catIndex = cats.indexWhere((element) => element.id == event.cat.id);
+      final int catIndex =
+          cats.indexWhere((element) => element.id == event.cat.id);
       if (catIndex != -1) {
         cats[catIndex].isFav = false;
       }
