@@ -1,4 +1,4 @@
-import 'package:cat_app/blocs/cats_list/cats_state.dart';
+import 'package:cat_app/cubits/cubits.dart';
 import 'package:flutter/material.dart';
 
 class CatFactWidget extends StatelessWidget {

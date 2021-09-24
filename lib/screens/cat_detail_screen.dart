@@ -2,9 +2,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../blocs/cats_list/all_cats_list_bloc.dart';
-
-import '../blocs/blocs.dart';
+import '../cubits/cubits.dart';
 import '../models/models.dart';
 import '../widgets/widgets.dart';
 
@@ -37,8 +35,8 @@ class CatDetailScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              child: BlocBuilder<AllCatsListBloc, CatsState>(
+            Container( 
+              child: BlocBuilder<CatsCubit, CatsState>(
                   builder: (context, state) {
                 if (state.status == CatsStatus.loading ||
                     state.status == CatsStatus.initial) {
@@ -57,13 +55,9 @@ class CatDetailScreen extends StatelessWidget {
                             state.isFaved(cat) ? Colors.redAccent : Colors.grey,
                         onPressed: () {
                           if (!cat.isFav) {
-                            BlocProvider.of<AllCatsListBloc>(context).add(
-                              CatAddedToFavs(cat: cat, userId: user.id),
-                            );
+                           context.read<CatsCubit>().addCatToFavs(cat, user);
                           } else {
-                            BlocProvider.of<AllCatsListBloc>(context).add(
-                              CatDeletedFromFavs(cat: cat),
-                            );
+                            context.read<CatsCubit>().deleteFromFavs(cat);
                           }
                           print('STATUS FOR ${cat.id} was ${cat.isFav}');
                         },

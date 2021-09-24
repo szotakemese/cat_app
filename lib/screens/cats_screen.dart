@@ -1,7 +1,7 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../blocs/cats_list/cats_list.dart';
+import '../cubits/cubits.dart';
 import '../widgets/cats_list.dart';
 
 import 'package:cat_app/auth/auth.dart';
@@ -16,12 +16,12 @@ class CatsScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () async =>
-                context.read<AllCatsListBloc>().add(LoadAllCatsEvent(user.id)),
+                context.read<CatsCubit>().loadAllCats(user),
             icon: Icon(Icons.refresh),
           )
         ],
       ),
-      body: BlocBuilder<AllCatsListBloc, CatsState>(builder: (context, state) {
+      body: BlocBuilder<CatsCubit, CatsState>(builder: (context, state) {
         if (state.status == CatsStatus.initial) {
           return Center(
             child: CircularProgressIndicator(),

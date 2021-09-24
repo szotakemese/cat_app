@@ -1,4 +1,4 @@
-import 'package:cat_app/data_service.dart';
+import 'package:cat_app/helpers/data_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cat_app_core/cat_app_core.dart';
@@ -8,9 +8,9 @@ import 'package:flutter/widgets.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'auth/auth.dart';
-import './blocs/blocs.dart';
+import 'package:cat_app/cubits/cubits.dart';
 
-import './helpers/navigation.dart';
+import 'widgets/navigator.dart';
 
 import 'package:cat_app/helpers/database.dart';
 
@@ -56,11 +56,11 @@ class CatsApp extends StatelessWidget {
             BlocProvider(
               create: (_) => NavCubit(),
             ),
-            BlocProvider<TabBloc>(
-              create: (_) => TabBloc(),
+            BlocProvider<TabCubit>(
+              create: (_) => TabCubit(),
             ),
             BlocProvider(
-              create: (_) => AllCatsListBloc(context.read<DataService>())..add(LoadAllCatsEvent(user.id)),
+              create: (_) => CatsCubit(context.read<DataService>())..loadAllCats(user),
             ),
           ],
           child: child!,

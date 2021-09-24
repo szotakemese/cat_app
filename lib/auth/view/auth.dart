@@ -1,5 +1,5 @@
 import 'package:authentication_repository/authentication_repository.dart';
-import 'package:cat_app/data_service.dart';
+import 'package:cat_app/helpers/data_service.dart';
 import 'package:cat_app/helpers/database.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';

@@ -1,10 +1,8 @@
-import 'package:cat_app/blocs/cats_list/cats_state.dart';
+import 'package:cat_app/cubits/cubits.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'list_item.dart';
 
-import 'package:cat_app/blocs/cats_list/all_cats_list_bloc.dart';
-import 'package:cat_app/blocs/cats_list/cats_event.dart';
 import 'package:cat_app/widgets/widgets.dart';
 
 class CatsList extends StatefulWidget {
@@ -17,7 +15,7 @@ class CatsList extends StatefulWidget {
 class _CatsListState extends State<CatsList> {
   final _scrollController = ScrollController();
   int page = 0;
-  late AllCatsListBloc _allCatsListBloc;
+  late CatsCubit _catsCubit;
 
   _CatsListState();
 
@@ -26,12 +24,12 @@ class _CatsListState extends State<CatsList> {
     super.initState();
 
     _scrollController.addListener(_onScroll);
-    _allCatsListBloc = context.read<AllCatsListBloc>();
+    _catsCubit = context.read<CatsCubit>();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AllCatsListBloc, CatsState>(
+    return BlocBuilder<CatsCubit, CatsState>(
       builder: (context, state) {
         switch (state.status) {
           case CatsStatus.failure:
@@ -77,9 +75,9 @@ class _CatsListState extends State<CatsList> {
   }
 
   void _onScroll() {
-    if (_isBottom && !_allCatsListBloc.state.isLoading) {
+    if (_isBottom && !_catsCubit.state.isLoading) {
       page += 1;
-      _allCatsListBloc.add(LoadMoreCats(page));
+      _catsCubit..loadMoreCats(page);
     }
   }
 
