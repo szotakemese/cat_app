@@ -12,7 +12,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
-    final User user = context.select((AuthBloc bloc) => bloc.state.user);
+    final User user = context.select((AuthCubit cubit) => cubit.state.user);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -39,11 +39,11 @@ class ProfileScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30.0),
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 15),
-                primary: Theme.of(context).accentColor,
+                primary: Theme.of(context).colorScheme.secondary,
               ),
               icon: const Icon(Icons.exit_to_app, color: Colors.white),
               onPressed: () =>
-                  context.read<AuthBloc>().add(AuthLogoutRequested()),
+                  context.read<AuthCubit>().logOutRequested(user),
             ),
           ],
         ),

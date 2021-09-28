@@ -1,31 +1,29 @@
-import 'package:cat_app/helpers/data_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cat_app_core/cat_app_core.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:auto_route/auto_route.dart';
 
-import 'auth/auth.dart';
+import 'package:cat_app/helpers/helpers.dart';
+import 'package:cat_app/auth/auth.dart';
 import 'package:cat_app/cubits/cubits.dart';
-
-import 'widgets/navigator.dart';
-
-import 'package:cat_app/helpers/database.dart';
+import 'package:cat_app/navigation/navigation.dart';
 
 void main() async {
   Bloc.observer = AppBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  final AuthenticationRepository authenticationRepository = AuthenticationRepository();
+  final AuthenticationRepository authenticationRepository =
+      AuthenticationRepository();
   await authenticationRepository.user.first;
 
   final DB dataBase = DB();
   await dataBase.openDB();
 
   final DataService dataService = DataService(dataBase: dataBase);
-  
+
   runApp(Auth(
     authenticationRepository: authenticationRepository,
     dataBase: dataBase,
@@ -34,43 +32,55 @@ void main() async {
 }
 
 class CatsApp extends StatelessWidget {
-  const CatsApp({Key? key}) : super(key: key);
+  CatsApp({Key? key}) : super(key: key);
 
-  static Page page() => const MaterialPage<void>(child: CatsApp());
+  static Page page() => MaterialPage<void>(child: CatsApp());
+
+  final _appRouter = AppRouter();
+
   @override
   Widget build(BuildContext context) {
-    final User user = context.select((AuthBloc bloc) => bloc.state.user);
+    final AuthState authState =
+        context.select((AuthCubit cubit) => cubit.state);
+    final ThemeData theme = ThemeData();
 
-    return MaterialApp(
-      title: "Cat App",
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
-        accentColor: Colors.teal.shade900,
+    return MaterialApp.router(
+      theme: theme.copyWith(
+        colorScheme: theme.colorScheme.copyWith(
+          primary: Colors.orange.shade400,
+          secondary: Colors.teal.shade800,
+        ),
       ),
-      localizationsDelegates: [
-        ArchSampleLocalizationsDelegate(),
-      ],
+      routerDelegate: AutoRouterDelegate.declarative(
+        _appRouter,
+        routes: (_) => [
+          authState.status == AuthStatus.authenticated
+              ? HomeRoute()
+              : LoginRoute()
+        ],
+      ),
+      routeInformationParser:
+          _appRouter.defaultRouteParser(includePrefixMatches: true),
+      title: "Cat App",
       builder: (context, child) {
         return MultiBlocProvider(
           providers: [
-            BlocProvider(
-              create: (_) => NavCubit(),
-            ),
             BlocProvider<TabCubit>(
               create: (_) => TabCubit(),
             ),
             BlocProvider(
-              create: (_) => CatsCubit(context.read<DataService>())..loadAllCats(user),
+              create: (_) => CatsCubit(context.read<DataService>())
+                ..loadAllCats(authState.user),
             ),
           ],
           child: child!,
         );
       },
-      routes: {
-        ArchSampleRoutes.home: (context) {
-          return AppNavigator();
-        },
-      },
+      // routes: {
+      //   ArchSampleRoutes.home: (context) {
+      //     return AppNavigator();
+      //   },
+      // },
     );
   }
 }

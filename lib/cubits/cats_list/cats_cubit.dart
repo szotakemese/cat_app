@@ -1,8 +1,8 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../helpers/data_service.dart';
-import 'cats_state.dart';
+import 'package:cat_app/helpers/helpers.dart';
+import 'cats_list.dart';
 
 import 'package:cat_app/models/models.dart';
 

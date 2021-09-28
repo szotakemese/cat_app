@@ -1,6 +1,6 @@
 import 'package:cat_app/cubits/cubits.dart';
 import 'package:flutter/material.dart';
-import 'list_item.dart';
+import 'package:cat_app/widgets/widgets.dart';
 
 class FavouritesList extends StatelessWidget {
   final CatsState state;

@@ -2,10 +2,9 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../cubits/cubits.dart';
-import '../models/models.dart';
-import '../widgets/widgets.dart';
-
+import 'package:cat_app/cubits/cubits.dart';
+import 'package:cat_app/models/models.dart';
+import 'package:cat_app/widgets/widgets.dart';
 import 'package:cat_app/auth/auth.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -13,12 +12,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 class CatDetailScreen extends StatelessWidget {
   final Cat cat;
   final int index;
-  const CatDetailScreen({Key? key, required this.cat, required this.index})
-      : super(key: key);
+
+  const CatDetailScreen({
+    Key? key,
+    required this.cat,
+    required this.index,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final User user = context.select((AuthBloc bloc) => bloc.state.user);
+    final User user = context.select((AuthCubit cubit) => cubit.state.user);
     return Scaffold(
       appBar: AppBar(
         title: Text('ID: ' + cat.id),
@@ -35,9 +38,9 @@ class CatDetailScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Container( 
-              child: BlocBuilder<CatsCubit, CatsState>(
-                  builder: (context, state) {
+            Container(
+              child:
+                  BlocBuilder<CatsCubit, CatsState>(builder: (context, state) {
                 if (state.status == CatsStatus.loading ||
                     state.status == CatsStatus.initial) {
                   return Center(
@@ -55,7 +58,7 @@ class CatDetailScreen extends StatelessWidget {
                             state.isFaved(cat) ? Colors.redAccent : Colors.grey,
                         onPressed: () {
                           if (!cat.isFav) {
-                           context.read<CatsCubit>().addCatToFavs(cat, user);
+                            context.read<CatsCubit>().addCatToFavs(cat, user);
                           } else {
                             context.read<CatsCubit>().deleteFromFavs(cat);
                           }

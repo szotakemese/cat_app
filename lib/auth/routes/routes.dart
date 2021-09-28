@@ -9,6 +9,6 @@ List<Page> onGenerateAppViewPages(AuthStatus state, List<Page<dynamic>> pages) {
       return [CatsApp.page()];
     case AuthStatus.unauthenticated:
     default:
-      return [LoginPage.page()];
+      return [LoginScreen.page()];
   }
 }

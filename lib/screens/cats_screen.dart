@@ -1,15 +1,14 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../cubits/cubits.dart';
-import '../widgets/cats_list.dart';
-
+import 'package:cat_app/cubits/cubits.dart';
+import 'package:cat_app/widgets/cats_list.dart';
 import 'package:cat_app/auth/auth.dart';
 
 class CatsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final User user = context.select((AuthBloc bloc) => bloc.state.user);
+    final User user = context.select((AuthCubit cubit) => cubit.state.user);
     return Scaffold(
       appBar: AppBar(
         title: Text('Cats'),

@@ -28,9 +28,10 @@ class LoginForm extends StatelessWidget {
               Text(
                 'Login.',
                 style: TextStyle(
-                    fontSize: 50,
-                    fontWeight: FontWeight.w900,
-                    color: Theme.of(context).accentColor),
+                  fontSize: 50,
+                  fontWeight: FontWeight.w900,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
               ),
               const SizedBox(height: 20.0),
               _GoogleLoginButton(),
@@ -47,7 +48,6 @@ class LoginForm extends StatelessWidget {
 class _GoogleLoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return ElevatedButton.icon(
       key: const Key('loginForm_googleLogin_raisedButton'),
       label: const Text(
@@ -59,7 +59,7 @@ class _GoogleLoginButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),
-        primary: theme.accentColor,
+        primary: Theme.of(context).colorScheme.secondary,
         fixedSize: Size(240, 50),
       ),
       icon: const Icon(FontAwesomeIcons.google, color: Colors.white),
@@ -82,7 +82,7 @@ class _FacebookLoginButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),
-        primary: theme.accentColor,
+        primary: theme.colorScheme.secondary,
         fixedSize: Size(240, 50),
       ),
       icon: const Icon(FontAwesomeIcons.facebook, color: Colors.white),

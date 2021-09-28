@@ -1,10 +1,9 @@
 import 'package:authentication_repository/authentication_repository.dart';
-import 'package:cat_app/helpers/data_service.dart';
-import 'package:cat_app/helpers/database.dart';
+import 'package:cat_app/helpers/helpers.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../auth.dart';
+import 'package:cat_app/auth/auth.dart';
 
 class Auth extends StatelessWidget {
   const Auth(
@@ -32,8 +31,14 @@ class Auth extends StatelessWidget {
       ],
       child: RepositoryProvider.value(
         value: _authenticationRepository,
+        // child: BlocProvider(
+        //   create: (_) => AuthBloc(
+        //     authenticationRepository: _authenticationRepository,
+        //   ),
+        //   child: const AuthView(),
+        // ),
         child: BlocProvider(
-          create: (_) => AuthBloc(
+          create: (_) => AuthCubit(
             authenticationRepository: _authenticationRepository,
           ),
           child: const AuthView(),
@@ -50,7 +55,7 @@ class AuthView extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: FlowBuilder<AuthStatus>(
-        state: context.select((AuthBloc bloc) => bloc.state.status),
+        state: context.select((AuthCubit cubit) => cubit.state.status),
         onGeneratePages: onGenerateAppViewPages,
       ),
     );

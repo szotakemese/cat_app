@@ -15,7 +15,7 @@ class CatFactWidget extends StatelessWidget {
           Text(
             'FACT',
             style: TextStyle(
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).colorScheme.primary,
               fontSize: 30,
               fontWeight: FontWeight.w900,
             ),
