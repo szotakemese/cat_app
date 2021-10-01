@@ -7,8 +7,6 @@ import 'package:cat_app/widgets/widgets.dart';
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
-  static Page page() => const MaterialPage<void>(child: ProfileScreen());
-
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
@@ -22,29 +20,13 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Avatar(photo: user.photo!),
-            const SizedBox(height: 4.0),
+            Avatar(photo: user.photo ?? ''),
+            const SizedBox(height: 14.0),
             Text(user.email ?? '', style: textTheme.headline6),
             const SizedBox(height: 4.0),
             Text(user.name ?? '', style: textTheme.headline5),
             const SizedBox(height: 4.0),
-            ElevatedButton.icon(
-              key: const Key('homePage_logout_iconButton'),
-              label: const Text(
-                'LOGOUT',
-                style: TextStyle(color: Colors.white),
-              ),
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                primary: Theme.of(context).colorScheme.secondary,
-              ),
-              icon: const Icon(Icons.exit_to_app, color: Colors.white),
-              onPressed: () =>
-                  context.read<AuthCubit>().logOutRequested(user),
-            ),
+            LogoutButton(user: user),
           ],
         ),
       ),

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:cat_app/helpers/database.dart';
 import 'package:http/http.dart' as http;
 
-import '../models/models.dart';
+import 'package:cat_app/features/cat_app/domain/entities/entities.dart';
 
 class DataService {
   final String catsListUrl = 'https://api.thecatapi.com/v1';
@@ -37,11 +37,11 @@ class DataService {
     }
   }
 
-  Future<void> saveCatsInDB(cats) async {
+  Future<void> saveCatsInDB(List<Cat> cats) async {
     cats.forEach((cat) async => await dataBase.insertCatToDb(cat));
   }
 
-  Future<List<Cat>> getFavCats(userId) async {
+  Future<List<Cat>> getFavCats(String userId) async {
     try {
       final http.Response response = await http.get(
         Uri.parse(catsListUrl + '/favourites?sub_id=$userId'),
@@ -77,26 +77,24 @@ class DataService {
     }
   }
 
-  Future<void> saveFactsInDB(facts) async {
+  Future<void> saveFactsInDB(List<CatFact> facts) async {
     facts.forEach((fact) async => await dataBase.insertFactToDb(fact));
   }
 
-  Future<Favourite> setFav(cat, userId) async {
+  Future<void> setFav(catId, userId) async {
     print('ACTION');
     try {
-      final http.Response response = await http.post(
+      await http.post(
         Uri.parse(catsListUrl + '/favourites'),
         headers: {
           "x-api-key": "44ae0849-4728-4144-a8ac-223564215798",
           "Content-Type": "application/json"
         },
         body: jsonEncode(<String, String>{
-          'image_id': cat.id,
+          'image_id': catId,
           'sub_id': userId,
         }),
       );
-
-      return Favourite.fromJson(jsonDecode(response.body));
     } catch (err) {
       throw err;
     }

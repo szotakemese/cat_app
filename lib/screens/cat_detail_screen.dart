@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:cat_app/cubits/cubits.dart';
-import 'package:cat_app/models/models.dart';
+import 'package:cat_app/features/cat_app/domain/entities/entities.dart';
 import 'package:cat_app/widgets/widgets.dart';
 import 'package:cat_app/auth/auth.dart';
 

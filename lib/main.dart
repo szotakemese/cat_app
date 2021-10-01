@@ -8,8 +8,8 @@ import 'package:auto_route/auto_route.dart';
 
 import 'package:cat_app/helpers/helpers.dart';
 import 'package:cat_app/auth/auth.dart';
-import 'package:cat_app/cubits/cubits.dart';
 import 'package:cat_app/navigation/navigation.dart';
+
 
 void main() async {
   Bloc.observer = AppBlocObserver();
@@ -33,8 +33,6 @@ void main() async {
 
 class CatsApp extends StatelessWidget {
   CatsApp({Key? key}) : super(key: key);
-
-  static Page page() => MaterialPage<void>(child: CatsApp());
 
   final _appRouter = AppRouter();
 
@@ -62,25 +60,6 @@ class CatsApp extends StatelessWidget {
       routeInformationParser:
           _appRouter.defaultRouteParser(includePrefixMatches: true),
       title: "Cat App",
-      builder: (context, child) {
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider<TabCubit>(
-              create: (_) => TabCubit(),
-            ),
-            BlocProvider(
-              create: (_) => CatsCubit(context.read<DataService>())
-                ..loadAllCats(authState.user),
-            ),
-          ],
-          child: child!,
-        );
-      },
-      // routes: {
-      //   ArchSampleRoutes.home: (context) {
-      //     return AppNavigator();
-      //   },
-      // },
     );
   }
 }

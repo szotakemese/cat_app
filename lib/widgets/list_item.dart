@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:cat_app/auth/auth.dart';
 import 'package:cat_app/cubits/cubits.dart';
-import 'package:cat_app/models/models.dart';
+import 'package:cat_app/features/cat_app/domain/entities/entities.dart';
 import 'package:cat_app/navigation/navigation.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -38,9 +38,7 @@ class ListItem extends StatelessWidget {
           //   );
           //   print('Action: Open Details Screen');
           // },
-          onTap: () {
-                              CatDetailRoute(cat: cat, index: index).show(context);
-                            },
+          onTap: () => CatDetailRoute(cat: cat, index: index).show(context),
           leading: Container(
             width: 60,
             child: Hero(

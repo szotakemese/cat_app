@@ -2,7 +2,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/widgets.dart';
 
-import '../models/models.dart';
+import 'package:cat_app/features/cat_app/domain/entities/entities.dart';
 
 class DB {
   Database? db;

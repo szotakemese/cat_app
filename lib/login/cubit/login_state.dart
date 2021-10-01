@@ -8,8 +8,6 @@ class LoginState extends Equatable {
   final FormzStatus status;
   final dynamic error;
 
-  @override
-  List<Object> get props => [status, error];
 
   LoginState copyWith({
     FormzStatus? status,
@@ -20,4 +18,7 @@ class LoginState extends Equatable {
       error: error,
     );
   }
+
+  @override
+  List<Object?> get props => [status, error];
 }

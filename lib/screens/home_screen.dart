@@ -1,34 +1,33 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cat_app/auth/auth.dart';
+import 'package:cat_app/cubits/cats_list/cats_list.dart';
+import 'package:cat_app/helpers/helpers.dart';
 import 'package:cat_app/navigation/navigation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({
-    Key? key,
+    final Key? key,
   }) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  @override
   Widget build(context) {
-    return Column(
-      children: [
-        Expanded(
-          child: AutoTabsScaffold(
-            homeIndex: 0,
-            routes: [
-              CatsTab(),
-              FavouritesTab(),
-              ProfileTab(),
-            ],
-            bottomNavigationBuilder: buildBottomNav,
-          ),
+    return BlocProvider<CatsCubit>(
+      create: (context) => CatsCubit(context.read<DataService>())
+        ..loadAllCats(context.read<AuthCubit>().state.user),
+      child: Scaffold(
+        body: AutoTabsScaffold(
+          homeIndex: 0,
+          routes: [
+            CatsTab(),
+            FavouritesTab(),
+            ProfileTab(),
+          ],
+          bottomNavigationBuilder: buildBottomNav,
         ),
-      ],
+      ),
     );
   }
 

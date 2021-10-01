@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cat_app/helpers/helpers.dart';
 import 'cats_list.dart';
 
-import 'package:cat_app/models/models.dart';
+import 'package:cat_app/features/cat_app/domain/entities/entities.dart';
 
 class CatsCubit extends Cubit<CatsState> {
   final DataService dataService;
@@ -76,7 +76,7 @@ class CatsCubit extends Cubit<CatsState> {
 
   Future<void> addCatToFavs(Cat cat, User user) async {
     try {
-      await dataService.setFav(cat, user.id);
+      await dataService.setFav(cat.id, user.id);
 
       Cat currentCat = state.cats.firstWhere((element) => element.id == cat.id);
       currentCat.isFav = true;

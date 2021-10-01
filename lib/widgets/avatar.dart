@@ -8,28 +8,26 @@ class Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: CachedNetworkImage(
-        imageUrl: photo,
-        imageBuilder: (context, imageProvider) => Container(
-          width: 100.0,
-          height: 100.0,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
-          ),
+    return CachedNetworkImage(
+      imageUrl: photo,
+      imageBuilder: (context, imageProvider) => Container(
+        width: 100.0,
+        height: 100.0,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
         ),
-        errorWidget: (context, url, error) => Container(
-          decoration: BoxDecoration(
-            color: Colors.orange,
-            shape: BoxShape.circle,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: new Icon(
-              Icons.person_outline,
-              size: 90,
-            ),
+      ),
+      errorWidget: (context, url, error) => Container(
+        decoration: BoxDecoration(
+          color: Colors.orange,
+          shape: BoxShape.circle,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: new Icon(
+            Icons.person_outline,
+            size: 90,
           ),
         ),
       ),

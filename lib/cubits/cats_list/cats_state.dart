@@ -1,4 +1,4 @@
-import 'package:cat_app/models/models.dart';
+import 'package:cat_app/features/cat_app/domain/entities/entities.dart';
 
 enum CatsStatus { initial, loading, succes, failure }
 
