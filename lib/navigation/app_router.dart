@@ -8,12 +8,10 @@ import 'package:cat_app/screens/screens.dart';
     AutoRoute(
       page: LoginScreen,
       path: '/login',
-      // initial: true,
     ),
     AutoRoute<String>(
       path: '/home',
       page: HomeScreen,
-      initial: true,
       children: [
         AutoRoute(
           path: 'cats',
@@ -21,7 +19,7 @@ import 'package:cat_app/screens/screens.dart';
           name: 'CatsTab',
           children: [
             AutoRoute(path: '', page: CatsScreen),
-            AutoRoute(path: ':id', page: CatDetailScreen),
+            AutoRoute(path: ':catId', page: CatDetailScreen),
           ],
         ),
         AutoRoute(
@@ -30,7 +28,7 @@ import 'package:cat_app/screens/screens.dart';
           name: 'FavouritesTab',
           children: [
             AutoRoute(path: '', page: FavouritesScreen),
-            AutoRoute(path: ':id', page: CatDetailScreen),
+            AutoRoute(path: ':catId', page: CatDetailScreen),
           ],
         ),
         AutoRoute(

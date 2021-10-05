@@ -10,18 +10,26 @@ import 'package:cat_app/auth/auth.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class CatDetailScreen extends StatelessWidget {
-  final Cat cat;
-  final int index;
+  final String catId;
+  final bool onCatsScreen;
 
   const CatDetailScreen({
     Key? key,
-    required this.cat,
-    required this.index,
+    required this.catId,
+    required this.onCatsScreen,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final User user = context.select((AuthCubit cubit) => cubit.state.user);
+    final Cat cat = context
+        .read<CatsCubit>()
+        .state
+        .cats
+        .firstWhere((element) => element.id == catId);
+    final int index = context.read<CatsCubit>().state.cats.indexOf(cat);
+    final String additionalTag = onCatsScreen ? 'cat' : 'fav';
+
     return Scaffold(
       appBar: AppBar(
         title: Text('ID: ' + cat.id),
@@ -31,7 +39,7 @@ class CatDetailScreen extends StatelessWidget {
           children: [
             Material(
               child: Hero(
-                tag: cat.id,
+                tag: cat.id + additionalTag,
                 child: CachedNetworkImage(
                   imageUrl: cat.url,
                   errorWidget: (context, url, error) => new Icon(Icons.error),
@@ -49,21 +57,14 @@ class CatDetailScreen extends StatelessWidget {
                 } else if (state.status == CatsStatus.succes) {
                   return Column(
                     children: [
-                      CatFactWidget(state, index),
-                      IconButton(
-                        icon: state.isFaved(cat)
-                            ? Icon(Icons.favorite)
-                            : Icon(Icons.favorite_border),
-                        color:
-                            state.isFaved(cat) ? Colors.redAccent : Colors.grey,
-                        onPressed: () {
-                          if (!cat.isFav) {
-                            context.read<CatsCubit>().addCatToFavs(cat, user);
-                          } else {
-                            context.read<CatsCubit>().deleteFromFavs(cat);
-                          }
-                          print('STATUS FOR ${cat.id} was ${cat.isFav}');
-                        },
+                      CatFactWidget(
+                        state,
+                        index,
+                      ),
+                      LikeIcon(
+                        cat: cat,
+                        user: user,
+                        state: state,
                       ),
                     ],
                   );

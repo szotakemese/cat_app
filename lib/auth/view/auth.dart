@@ -6,12 +6,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cat_app/auth/auth.dart';
 
 class Auth extends StatelessWidget {
-  const Auth(
-      {Key? key,
-      required AuthenticationRepository authenticationRepository,
-      required this.dataBase,
-      required this.dataService})
-      : _authenticationRepository = authenticationRepository,
+  const Auth({
+    Key? key,
+    required AuthenticationRepository authenticationRepository,
+    required this.dataBase,
+    required this.dataService,
+  })  : _authenticationRepository = authenticationRepository,
         super(key: key);
 
   final AuthenticationRepository _authenticationRepository;
@@ -34,8 +34,9 @@ class Auth extends StatelessWidget {
         child: BlocProvider(
           create: (_) => AuthCubit(
             authenticationRepository: _authenticationRepository,
+            dataBase: dataBase,
           ),
-          child: CatsApp(),
+          child: const CatsApp(),
         ),
       ),
     );

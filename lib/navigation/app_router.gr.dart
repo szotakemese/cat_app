@@ -7,7 +7,6 @@
 import 'package:auto_route/auto_route.dart' as _i3;
 import 'package:flutter/material.dart' as _i4;
 
-import '../features/cat_app/domain/entities/entities.dart' as _i5;
 import '../login/login.dart' as _i1;
 import '../screens/screens.dart' as _i2;
 
@@ -46,7 +45,9 @@ class AppRouter extends _i3.RootStackRouter {
       return _i3.MaterialPageX<dynamic>(
           routeData: routeData,
           child: _i2.CatDetailScreen(
-              key: args.key, cat: args.cat, index: args.index));
+              key: args.key,
+              catId: args.catId,
+              onCatsScreen: args.onCatsScreen));
     },
     FavouritesRoute.name: (routeData) {
       return _i3.MaterialPageX<dynamic>(
@@ -56,17 +57,15 @@ class AppRouter extends _i3.RootStackRouter {
 
   @override
   List<_i3.RouteConfig> get routes => [
-        _i3.RouteConfig('/#redirect',
-            path: '/', redirectTo: '/home', fullMatch: true),
         _i3.RouteConfig(LoginRoute.name, path: '/login'),
         _i3.RouteConfig(HomeRoute.name, path: '/home', children: [
           _i3.RouteConfig(CatsTab.name, path: 'cats', children: [
             _i3.RouteConfig(CatsRoute.name, path: ''),
-            _i3.RouteConfig(CatDetailRoute.name, path: ':id')
+            _i3.RouteConfig(CatDetailRoute.name, path: ':catId')
           ]),
           _i3.RouteConfig(FavouritesTab.name, path: 'favourites', children: [
             _i3.RouteConfig(FavouritesRoute.name, path: ''),
-            _i3.RouteConfig(CatDetailRoute.name, path: ':id')
+            _i3.RouteConfig(CatDetailRoute.name, path: ':catId')
           ]),
           _i3.RouteConfig(ProfileTab.name, path: 'profile'),
           _i3.RouteConfig('*#redirect',
@@ -122,23 +121,26 @@ class CatsRoute extends _i3.PageRouteInfo<void> {
 
 /// generated route for [_i2.CatDetailScreen]
 class CatDetailRoute extends _i3.PageRouteInfo<CatDetailRouteArgs> {
-  CatDetailRoute({_i4.Key? key, required _i5.Cat cat, required int index})
+  CatDetailRoute(
+      {_i4.Key? key, required String catId, required bool onCatsScreen})
       : super(name,
-            path: ':id',
-            args: CatDetailRouteArgs(key: key, cat: cat, index: index),
+            path: ':catId',
+            args: CatDetailRouteArgs(
+                key: key, catId: catId, onCatsScreen: onCatsScreen),
             rawPathParams: {});
 
   static const String name = 'CatDetailRoute';
 }
 
 class CatDetailRouteArgs {
-  const CatDetailRouteArgs({this.key, required this.cat, required this.index});
+  const CatDetailRouteArgs(
+      {this.key, required this.catId, required this.onCatsScreen});
 
   final _i4.Key? key;
 
-  final _i5.Cat cat;
+  final String catId;
 
-  final int index;
+  final bool onCatsScreen;
 }
 
 /// generated route for [_i2.FavouritesScreen]

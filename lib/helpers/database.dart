@@ -128,7 +128,8 @@ class DB {
     }
   }
 
-  void close() async {
+  Future<void> closeDB() async {
     db!.close();
+    print('DB closed');
   }
 }

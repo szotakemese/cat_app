@@ -1,3 +1,4 @@
+// import 'package:cat_app/helpers/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,8 +28,10 @@ class LogoutButton extends StatelessWidget {
         primary: Theme.of(context).colorScheme.secondary,
       ),
       icon: const Icon(Icons.exit_to_app, color: Colors.white),
-      onPressed: () =>
-         context.read<AuthCubit>().logOutRequested(user),
+      onPressed: () {
+        context.read<AuthCubit>().logOutRequested(user);
+        // context.read<DataService>().closeDB();
+      },
     );
   }
 }

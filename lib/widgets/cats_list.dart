@@ -49,7 +49,7 @@ class _CatsListState extends State<CatsList> {
                           index.toString(),
                         ),
                         cat: state.cats[index],
-                        index: index,
+                        onCatsScreen: true,
                       );
               },
               itemCount: state.hasReachedMax

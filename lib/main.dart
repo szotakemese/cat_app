@@ -31,10 +31,10 @@ void main() async {
   ));
 }
 
-class CatsApp extends StatelessWidget {
-  CatsApp({Key? key}) : super(key: key);
+final _appRouter = AppRouter();
 
-  final _appRouter = AppRouter();
+class CatsApp extends StatelessWidget {
+  const CatsApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +57,7 @@ class CatsApp extends StatelessWidget {
               : LoginRoute()
         ],
       ),
+      routeInformationProvider: AutoRouteInformationProvider(),
       routeInformationParser:
           _appRouter.defaultRouteParser(includePrefixMatches: true),
       title: "Cat App",

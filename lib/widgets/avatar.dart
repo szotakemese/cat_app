@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 class Avatar extends StatelessWidget {
   const Avatar({Key? key, required this.photo}) : super(key: key);
 
-  final String photo;
+  final String? photo;
 
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
-      imageUrl: photo,
+      imageUrl: photo ?? '' ,
       imageBuilder: (context, imageProvider) => Container(
         width: 100.0,
         height: 100.0,

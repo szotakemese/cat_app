@@ -16,8 +16,8 @@ class FavouritesList extends StatelessWidget {
             itemBuilder: (context, index) {
               return ListItem(
                 key: Key(index.toString()),
-                index: index,
                 cat: state.favourites[index],
+                onCatsScreen: false,
               );
             },
           );
