@@ -1,14 +1,31 @@
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:flutter/widgets.dart';
-
+import 'package:cat_app/core/error/exceptions.dart';
 import 'package:cat_app/features/cat_app/domain/entities/entities.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
-class DB {
+abstract class CatAppLocalDataSource {
+  Future<void> openDB();
+
+  Future<void> insertCatToDb(Cat cat);
+
+  Future<void> insertFactToDb(CatFact fact);
+
+  Future<List<Cat>> getCatsFromDb(int page, int limit);
+
+  Future<List<Cat>> getFavCatsFromDb();
+
+  Future<List<CatFact>> getFactsFromDb();
+
+  Future<void> updateCatFavStatus(Cat cat);
+
+  Future<void> closeDB();
+}
+
+class CatAppLocalDataSourceImpl implements CatAppLocalDataSource {
   Database? db;
 
-  Future openDB() async {
-    WidgetsFlutterBinding.ensureInitialized();
+  @override
+  Future<void> openDB() async {
     db = await openDatabase(
       join(await getDatabasesPath(), 'cat_database.db'),
       onCreate: (Database db, version) {
@@ -24,6 +41,7 @@ class DB {
     print('DB opened');
   }
 
+  @override
   Future<void> insertCatToDb(Cat cat) async {
     try {
       await db!.insert(
@@ -31,11 +49,12 @@ class DB {
         cat.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
-    } catch (e) {
-      print(e);
+    } on Exception {
+      throw CacheException();
     }
   }
 
+  @override
   Future<void> insertFactToDb(CatFact fact) async {
     try {
       await db!.insert(
@@ -43,28 +62,12 @@ class DB {
         fact.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
-    } catch (e) {
-      print(e);
+    } on Exception {
+      throw CacheException();
     }
   }
 
-  Future<List<CatFact>> getFactsFromDb() async {
-    try {
-      final List<Map<String, dynamic>> maps = await db!.query('facts');
-      final List<CatFact> factsList = List.generate(maps.length, (i) {
-        return CatFact(
-          fact: maps[i]['fact'],
-          length: maps[i]['length'],
-        );
-      });
-
-      return factsList;
-    } catch (e) {
-      print(e);
-      return [];
-    }
-  }
-
+  @override
   Future<List<Cat>> getCatsFromDb(int page, int limit) async {
     try {
       final List<Map<String, dynamic>> maps = await db!.query(
@@ -74,13 +77,8 @@ class DB {
         offset: page * limit,
       );
 
-      final List<Cat> catsList = List.generate(maps.length, (i) {
-        return Cat(
-          id: maps[i]['id'],
-          url: maps[i]['url'],
-          isFav: maps[i]['isFav'] == 1,
-        );
-      });
+      final List<Cat> catsList =
+          maps.map((cat) => Cat.allCatsFromDB(cat)).toList();
 
       List<String> onlyId = [];
       catsList.forEach((e) => onlyId.add(e.id));
@@ -88,43 +86,51 @@ class DB {
       print('FROM DATABASE (${catsList.length}) : $onlyId');
 
       return catsList;
-    } catch (e) {
-      print(e);
-      return [];
+    } on Exception {
+      throw CacheException();
     }
   }
-  
+
+  @override
   Future<List<Cat>> getFavCatsFromDb() async {
     try {
       final List<Map<String, dynamic>> maps =
           await db!.query('cats', where: 'isFav == 1');
 
-      final List<Cat> catsList = List.generate(maps.length, (i) {
-        return Cat(
-          id: maps[i]['id'],
-          url: maps[i]['url'],
-          isFav: true,
-        );
-      });
+      final List<Cat> catsList =
+          maps.map((cat) => Cat.favCatsFromDB(cat)).toList();
 
       return catsList;
-    } catch (e) {
-      print(e);
-      return [];
+    } on Exception {
+      throw CacheException();
     }
   }
 
-  Future<int> updateCatFavStatus(Cat cat) async {
+  @override
+  Future<List<CatFact>> getFactsFromDb() async {
     try {
-      return await db!.update(
+      final List<Map<String, dynamic>> maps = await db!.query('facts');
+
+      final List<CatFact> factsList =
+          maps.map((fact) => CatFact.fromMap(fact)).toList();
+
+      return factsList;
+    } on Exception {
+      throw CacheException();
+    }
+  }
+
+  @override
+  Future<void> updateCatFavStatus(Cat cat) async {
+    try {
+      await db!.update(
         'cats',
         cat.toMap(),
         where: "id = ?",
         whereArgs: [cat.id],
       );
-    } catch (e) {
-      print(e);
-      return 0;
+    } on Exception {
+      throw CacheException();
     }
   }
 

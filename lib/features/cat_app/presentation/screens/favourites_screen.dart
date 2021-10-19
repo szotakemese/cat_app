@@ -1,9 +1,8 @@
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:cat_app/features/cat_app/presentation/cubit/cat_app_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:cat_app/cubits/cubits.dart';
-import 'package:cat_app/widgets/widgets.dart';
+import 'package:cat_app/features/cat_app/presentation/widgets/favourites_list.dart';
 import 'package:cat_app/auth/auth.dart';
 
 class FavouritesScreen extends StatelessWidget {
@@ -16,19 +15,19 @@ class FavouritesScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () async =>
-                BlocProvider.of<CatsCubit>(context).loadAllCats(user),
+                BlocProvider.of<CatAppCubit>(context).loadAllCats(user),
             icon: Icon(Icons.refresh),
           )
         ],
       ),
-      body: BlocBuilder<CatsCubit, CatsState>(builder: (context, state) {
-        if (state.status == CatsStatus.initial) {
+      body: BlocBuilder<CatAppCubit, CatAppState>(builder: (context, state) {
+        if (state.status == CatAppStatus.initial) {
           return Center(
             child: CircularProgressIndicator(),
           );
-        } else if (state.status == CatsStatus.succes) {
+        } else if (state.status == CatAppStatus.succes) {
           return FavouritesList(state);
-        } else if (state.status == CatsStatus.failure) {
+        } else if (state.status == CatAppStatus.failure) {
           return Padding(
             padding: const EdgeInsets.all(30.0),
             child: Center(

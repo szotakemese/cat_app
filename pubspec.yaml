@@ -13,8 +13,8 @@ dependencies:
     sdk: flutter
   authentication_repository:
     path: packages/authentication_repository
-  bloc: ^7.0.0
-  flutter_bloc: ^7.0.1
+  bloc: ^7.2.0
+  flutter_bloc: ^7.3.0
   bloc_test: ^8.0.2
   equatable: ^2.0.3
   http: ^0.13.3
@@ -28,6 +28,8 @@ dependencies:
   auto_route: ^2.4.0
   dartz: ^0.10.0
   cupertino_icons: ^1.0.0
+#  data_connection_checker: ^0.3.4
+  get_it: ^7.2.0
 
 dev_dependencies:
   # bloc_test: ^8.0.0

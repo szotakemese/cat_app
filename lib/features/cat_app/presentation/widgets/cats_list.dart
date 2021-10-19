@@ -1,7 +1,7 @@
-import 'package:cat_app/cubits/cubits.dart';
+import 'package:cat_app/features/cat_app/presentation/cubit/cat_app_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cat_app/widgets/widgets.dart';
+import './widgets.dart';
 
 class CatsList extends StatefulWidget {
   CatsList();
@@ -13,7 +13,7 @@ class CatsList extends StatefulWidget {
 class _CatsListState extends State<CatsList> {
   final _scrollController = ScrollController();
   int page = 0;
-  late CatsCubit _catsCubit;
+  late CatAppCubit _catAppCubit;
 
   _CatsListState();
 
@@ -22,19 +22,19 @@ class _CatsListState extends State<CatsList> {
     super.initState();
 
     _scrollController.addListener(_onScroll);
-    _catsCubit = context.read<CatsCubit>();
+    _catAppCubit = context.read<CatAppCubit>();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CatsCubit, CatsState>(
+      return BlocBuilder<CatAppCubit, CatAppState>(
       builder: (context, state) {
         switch (state.status) {
-          case CatsStatus.failure:
+          case CatAppStatus.failure:
             return const Center(
               child: Text('Failed to fetch Cats'),
             );
-          case CatsStatus.succes:
+          case CatAppStatus.succes:
             if (state.cats.isEmpty) {
               return const Center(
                 child: Text('Cats List is empty'),
@@ -73,9 +73,9 @@ class _CatsListState extends State<CatsList> {
   }
 
   void _onScroll() {
-    if (_isBottom && !_catsCubit.state.isLoading) {
+    if (_isBottom && !_catAppCubit.state.isLoading) {
       page += 1;
-      _catsCubit..loadMoreCats(page);
+      _catAppCubit..loadMoreCats(page);
     }
   }
 

@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cat_app/login/login.dart';
-import 'package:cat_app/screens/screens.dart';
+import 'package:cat_app/features/cat_app/presentation/screens/screens.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Screen,Route',

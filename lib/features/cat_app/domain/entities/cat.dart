@@ -1,4 +1,7 @@
-class Cat {
+import 'package:equatable/equatable.dart';
+
+// ignore: must_be_immutable
+class Cat extends Equatable {
   final String id;
   final String url;
   bool isFav;
@@ -19,6 +22,18 @@ class Cat {
         isFav: true,
       );
 
+  factory Cat.allCatsFromDB(Map<String, dynamic> dbData) => Cat(
+        id: dbData['id'],
+        url: dbData['url'],
+        isFav: dbData['isFav'] == 1,
+      );
+  
+  factory Cat.favCatsFromDB(Map<String, dynamic> dbData) => Cat(
+        id: dbData['id'],
+        url: dbData['url'],
+        isFav: true,
+      );
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -31,4 +46,7 @@ class Cat {
   String toString() {
     return 'Cat{id: $id, url: $url, isFav: $isFav}';
   }
+
+  @override
+  List<Object> get props => [id, url, isFav,] ;
 }

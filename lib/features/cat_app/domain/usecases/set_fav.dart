@@ -1,26 +1,29 @@
-// import 'package:cat_app/core/error/failures.dart';
-// import 'package:cat_app/core/usecases/usecase.dart';
-// import 'package:cat_app/features/cat_app/domain/entities/entities.dart';
-// import 'package:cat_app/features/cat_app/domain/repositories/cat_app_repository.dart';
-// import 'package:dartz/dartz.dart';
-// import 'package:equatable/equatable.dart';
+import 'package:cat_app/core/error/failures.dart';
+import 'package:cat_app/core/usecases/usecase.dart';
+import 'package:cat_app/features/cat_app/domain/repositories/cat_app_repository.dart';
+import 'package:dartz/dartz.dart';
+import 'package:equatable/equatable.dart';
 
-// class SetFav implements UseCase<void, NoParams> {
-//   final CatAppRepository catAppRepository;
+class SetFav implements UseCase<void, SetFavParams> {
+  final CatAppRepository catAppRepository;
 
-//   SetFav(this.catAppRepository);
+  SetFav(this.catAppRepository);
 
-//   @override
-//   Future<Either<Failure, List<Cat>>> call(int page) async {
-//     return await catAppRepository.setFav(page);
-//   }
-// }
+  @override
+  Future<Either<Failure, void>> call(SetFavParams params) async {
+    return await catAppRepository.setFav(params.catId, params.userId);
+  }
+}
 
-// class NoParams extends Equatable {
-//   final int number;
+class SetFavParams extends Equatable {
+  final String catId;
+  final String userId;
 
-//   NoParams({required this.number}) : super();
+  SetFavParams({
+    required this.catId,
+    required this.userId,
+  });
 
-//   @override
-//   List<Object> get props => [number];
-// }
+  @override
+  List<Object> get props => [catId, userId];
+}

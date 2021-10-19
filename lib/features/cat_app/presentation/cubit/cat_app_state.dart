@@ -1,38 +1,39 @@
-import 'package:cat_app/features/cat_app/domain/entities/entities.dart';
+part of 'cat_app_cubit.dart';
 
-enum CatsStatus { initial, loading, succes, failure }
+enum CatAppStatus { initial, loading, succes, failure }
 
-class CatsState {
+class CatAppState extends Equatable {
   final List<Cat> cats;
   final List<Cat> favourites;
   final List<CatFact> facts;
   final bool isLoading;
-  final CatsStatus status;
+  final CatAppStatus status;
   final bool hasReachedMax;
   final dynamic error;
 
-  CatsState({
+  const CatAppState({
     this.cats = const <Cat>[],
     this.favourites = const <Cat>[],
     this.facts = const <CatFact>[],
     this.isLoading = false,
-    this.status = CatsStatus.initial,
+    this.status = CatAppStatus.initial,
     this.hasReachedMax = false,
     this.error,
   });
 
-  bool isFaved(final Cat cat) => favourites.indexWhere((element) => element.id == cat.id) >= 0;
+  bool isFaved(final Cat cat) =>
+      favourites.indexWhere((element) => element.id == cat.id) >= 0;
 
-  CatsState copyWith({
+  CatAppState copyWith({
     final List<Cat>? cats,
     final List<Cat>? favourites,
     final List<CatFact>? facts,
     final bool? isLoading,
-    final CatsStatus? status,
+    final CatAppStatus? status,
     final bool? hasReachedMax,
     final dynamic error,
   }) {
-    return CatsState(
+    return CatAppState(
       cats: cats ?? this.cats,
       favourites: favourites ?? this.favourites,
       facts: facts ?? this.facts,
@@ -42,4 +43,15 @@ class CatsState {
       error: error,
     );
   }
+
+  @override
+  List<Object?> get props => [
+        cats,
+        favourites,
+        facts,
+        isLoading,
+        status,
+        hasReachedMax,
+        error,
+      ];
 }

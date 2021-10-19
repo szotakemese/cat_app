@@ -1,12 +1,12 @@
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:cat_app/features/cat_app/presentation/cubit/cat_app_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:cat_app/auth/auth.dart';
-import 'package:cat_app/cubits/cubits.dart';
 import 'package:cat_app/features/cat_app/domain/entities/entities.dart';
 import 'package:cat_app/navigation/navigation.dart';
-import 'package:cat_app/widgets/widgets.dart';
+import './widgets.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class ListItem extends StatelessWidget {
@@ -22,7 +22,6 @@ class ListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final User user = context.select((AuthCubit bloc) => bloc.state.user);
-    final CatsState state = context.read<CatsCubit>().state;
     final String additionalTag = onCatsScreen ? 'cat' : 'fav';
 
     return Card(
@@ -46,7 +45,7 @@ class ListItem extends StatelessWidget {
             trailing: LikeIcon(
               cat: cat,
               user: user,
-              state: state,
+              state: context.read<CatAppCubit>().state,
             )),
       ),
     );

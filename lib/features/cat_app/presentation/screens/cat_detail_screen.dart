@@ -1,10 +1,10 @@
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:cat_app/features/cat_app/presentation/cubit/cat_app_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:cat_app/cubits/cubits.dart';
 import 'package:cat_app/features/cat_app/domain/entities/entities.dart';
-import 'package:cat_app/widgets/widgets.dart';
+import 'package:cat_app/features/cat_app/presentation/widgets/widgets.dart';
 import 'package:cat_app/auth/auth.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -23,11 +23,11 @@ class CatDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final User user = context.select((AuthCubit cubit) => cubit.state.user);
     final Cat cat = context
-        .read<CatsCubit>()
+        .read<CatAppCubit>()
         .state
         .cats
         .firstWhere((element) => element.id == catId);
-    final int index = context.read<CatsCubit>().state.cats.indexOf(cat);
+    final int index = context.read<CatAppCubit>().state.cats.indexOf(cat);
     final String additionalTag = onCatsScreen ? 'cat' : 'fav';
 
     return Scaffold(
@@ -47,14 +47,14 @@ class CatDetailScreen extends StatelessWidget {
               ),
             ),
             Container(
-              child:
-                  BlocBuilder<CatsCubit, CatsState>(builder: (context, state) {
-                if (state.status == CatsStatus.loading ||
-                    state.status == CatsStatus.initial) {
+              child: BlocBuilder<CatAppCubit, CatAppState>(
+                  builder: (context, state) {
+                if (state.status == CatAppStatus.loading ||
+                    state.status == CatAppStatus.initial) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
-                } else if (state.status == CatsStatus.succes) {
+                } else if (state.status == CatAppStatus.succes) {
                   return Column(
                     children: [
                       CatFactWidget(
@@ -68,7 +68,7 @@ class CatDetailScreen extends StatelessWidget {
                       ),
                     ],
                   );
-                } else if (state.status == CatsStatus.failure) {
+                } else if (state.status == CatAppStatus.failure) {
                   return Padding(
                     padding: const EdgeInsets.all(30.0),
                     child: Center(

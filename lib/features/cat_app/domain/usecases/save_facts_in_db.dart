@@ -5,22 +5,24 @@ import 'package:cat_app/features/cat_app/domain/repositories/cat_app_repository.
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-class GetAllCats implements UseCase<List<Cat>, int> {
+class SaveFactsInDb implements UseCase<void, SaveFactsInDbParams> {
   final CatAppRepository catAppRepository;
 
-  GetAllCats(this.catAppRepository);
+  SaveFactsInDb(this.catAppRepository);
 
   @override
-  Future<Either<Failure, List<Cat>>> call(int page) async {
-    return await catAppRepository.getAllCats(page);
+  Future<Either<Failure, void>> call(SaveFactsInDbParams params) async {
+    return await catAppRepository.saveFactsInDB(params.facts);
   }
 }
 
-class Params extends Equatable {
-  final int page;
+class SaveFactsInDbParams extends Equatable {
+    final List<CatFact> facts;
 
-  Params({required this.page}) : super();
+  SaveFactsInDbParams({
+    required this.facts
+  });
 
   @override
-  List<Object> get props => [page];
+  List<Object> get props => [facts];
 }

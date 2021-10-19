@@ -1,11 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cat_app/auth/auth.dart';
-import 'package:cat_app/cubits/cats_list/cats_list.dart';
-import 'package:cat_app/helpers/helpers.dart';
+import 'package:cat_app/features/cat_app/presentation/cubit/cat_app_cubit.dart';
 import 'package:cat_app/navigation/navigation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../injection_container.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
@@ -14,9 +15,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(context) {
-    return BlocProvider<CatsCubit>(
-      create: (context) => CatsCubit(context.read<DataService>())
-        ..loadAllCats(context.read<AuthCubit>().state.user),
+    return BlocProvider<CatAppCubit>(
+      create: (context) =>
+          sl<CatAppCubit>()..loadAllCats(context.read<AuthCubit>().state.user),
       child: Scaffold(
         body: AutoTabsScaffold(
           homeIndex: 0,

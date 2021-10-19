@@ -1,9 +1,9 @@
-import 'package:cat_app/cubits/cubits.dart';
+import 'package:cat_app/features/cat_app/presentation/cubit/cat_app_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:cat_app/widgets/widgets.dart';
+import './widgets.dart';
 
 class FavouritesList extends StatelessWidget {
-  final CatsState state;
+  final CatAppState state;
   const FavouritesList(this.state);
   @override
   Widget build(BuildContext context) {

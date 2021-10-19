@@ -1,8 +1,8 @@
-import 'package:cat_app/cubits/cubits.dart';
+import 'package:cat_app/features/cat_app/presentation/cubit/cat_app_cubit.dart';
 import 'package:flutter/material.dart';
 
 class CatFactWidget extends StatelessWidget {
-  final CatsState state;
+  final CatAppState state;
   final int index;
   const CatFactWidget(this.state, this.index);
   @override
