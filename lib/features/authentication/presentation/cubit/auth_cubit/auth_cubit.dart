@@ -5,10 +5,8 @@ import 'package:cat_app/features/authentication/domain/entities/user.dart';
 import 'package:cat_app/features/authentication/domain/usecases/get_current_user.dart';
 import 'package:cat_app/features/authentication/domain/usecases/get_user.dart';
 import 'package:cat_app/features/authentication/domain/usecases/log_out.dart';
-// import 'package:cat_app/features/cat_app/data/datasources/cat_app_local_datasource.dart';
 import 'package:equatable/equatable.dart';
 import 'package:very_good_analysis/very_good_analysis.dart';
-// import '../../../../../injection_container.dart';
 import '../../../domain/entities/auth_status.dart';
 
 part 'auth_state.dart';

@@ -9,12 +9,8 @@ import '../../../injection_container.dart';
 class Auth extends StatelessWidget {
   const Auth({
     Key? key,
-    // required AuthenticationRepository authenticationRepository,
   })  : 
-  // _authenticationRepository = authenticationRepository,
         super(key: key);
-
-  // final AuthenticationRepository _authenticationRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +18,6 @@ class Auth extends StatelessWidget {
         value: sl<AuthenticationRepository>(),
         child: BlocProvider<AuthCubit>(
           create: (context) => sl<AuthCubit>(
-            // authenticationRepository: _authenticationRepository,
           ),
           child: const CatsApp(),
         ),
