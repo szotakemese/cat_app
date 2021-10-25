@@ -18,6 +18,7 @@ class FavouritesList extends StatelessWidget {
                 key: Key(index.toString()),
                 cat: state.favourites[index],
                 onCatsScreen: false,
+                state: state,
               );
             },
           );

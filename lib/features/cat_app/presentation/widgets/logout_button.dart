@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:authentication_repository/authentication_repository.dart';
+import 'package:cat_app/features/authentication/domain/entities/user.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cat_app/auth/auth.dart';
+import 'package:cat_app/features/authentication/presentation/cubit/auth_cubit/auth_cubit.dart';
 
 class LogoutButton extends StatelessWidget {
   const LogoutButton({

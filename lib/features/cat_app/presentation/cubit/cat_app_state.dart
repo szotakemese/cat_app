@@ -1,7 +1,5 @@
 part of 'cat_app_cubit.dart';
 
-enum CatAppStatus { initial, loading, succes, failure }
-
 class CatAppState extends Equatable {
   final List<Cat> cats;
   final List<Cat> favourites;

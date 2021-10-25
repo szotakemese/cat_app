@@ -9,7 +9,8 @@ class Avatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
-      imageUrl: photo ?? '' ,
+      imageUrl: photo ??
+          "",
       imageBuilder: (context, imageProvider) => Container(
         width: 100.0,
         height: 100.0,

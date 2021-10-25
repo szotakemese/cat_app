@@ -1,3 +1,4 @@
+import 'package:cat_app/features/cat_app/domain/entities/cat_app_status.dart';
 import 'package:cat_app/features/cat_app/presentation/cubit/cat_app_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,7 +28,7 @@ class _CatsListState extends State<CatsList> {
 
   @override
   Widget build(BuildContext context) {
-      return BlocBuilder<CatAppCubit, CatAppState>(
+    return BlocBuilder<CatAppCubit, CatAppState>(
       builder: (context, state) {
         switch (state.status) {
           case CatAppStatus.failure:
@@ -50,6 +51,7 @@ class _CatsListState extends State<CatsList> {
                         ),
                         cat: state.cats[index],
                         onCatsScreen: true,
+                        state: state,
                       );
               },
               itemCount: state.hasReachedMax
@@ -57,6 +59,7 @@ class _CatsListState extends State<CatsList> {
                   : state.cats.length + 1,
               controller: _scrollController,
             );
+
           default:
             return const Center(
               child: CircularProgressIndicator(),

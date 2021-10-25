@@ -1,4 +1,4 @@
-import 'package:authentication_repository/authentication_repository.dart';
+import 'package:cat_app/features/authentication/domain/entities/user.dart';
 import 'package:cat_app/features/cat_app/presentation/cubit/cat_app_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +24,7 @@ class LikeIcon extends StatelessWidget {
           : Icon(Icons.favorite_border),
       color: state.isFaved(cat) ? Colors.redAccent : Colors.grey,
       onPressed: () {
-        if (!state.isFaved(cat)) {
+        if (!cat.isFav) {
           context.read<CatAppCubit>().addCatToFavs(cat, user);
         } else {
           context.read<CatAppCubit>().deleteFromFavs(cat);

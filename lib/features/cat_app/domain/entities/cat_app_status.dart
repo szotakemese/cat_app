@@ -1,0 +1,1 @@
+enum CatAppStatus { initial, loading, succes, failure }

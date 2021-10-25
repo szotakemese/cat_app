@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cat_app/auth/auth.dart';
+import 'package:cat_app/features/authentication/presentation/cubit/auth_cubit/auth_cubit.dart';
 import 'package:cat_app/features/cat_app/presentation/cubit/cat_app_cubit.dart';
-import 'package:cat_app/navigation/navigation.dart';
+import 'package:cat_app/features/cat_app/presentation/navigation/navigation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

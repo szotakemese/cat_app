@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cat_app/login/login.dart';
+import 'package:cat_app/features/authentication/presentation/screens/login_screen.dart';
 import 'package:cat_app/features/cat_app/presentation/screens/screens.dart';
 
 @MaterialAutoRouter(

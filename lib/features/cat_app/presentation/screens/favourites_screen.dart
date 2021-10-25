@@ -1,9 +1,10 @@
-import 'package:authentication_repository/authentication_repository.dart';
+import 'package:cat_app/features/authentication/domain/entities/user.dart';
+import 'package:cat_app/features/cat_app/domain/entities/cat_app_status.dart';
 import 'package:cat_app/features/cat_app/presentation/cubit/cat_app_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cat_app/features/cat_app/presentation/widgets/favourites_list.dart';
-import 'package:cat_app/auth/auth.dart';
+import 'package:cat_app/features/authentication/presentation/cubit/auth_cubit/auth_cubit.dart';
 
 class FavouritesScreen extends StatelessWidget {
   @override
@@ -25,7 +26,8 @@ class FavouritesScreen extends StatelessWidget {
           return Center(
             child: CircularProgressIndicator(),
           );
-        } else if (state.status == CatAppStatus.succes) {
+        } else {
+          if (state.status == CatAppStatus.succes) {
           return FavouritesList(state);
         } else if (state.status == CatAppStatus.failure) {
           return Padding(
@@ -42,6 +44,7 @@ class FavouritesScreen extends StatelessWidget {
           );
         } else {
           return Container();
+        }
         }
       }),
     );

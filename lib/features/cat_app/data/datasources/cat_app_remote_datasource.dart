@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:cat_app/core/error/exceptions.dart';
+import 'package:cat_app/features/cat_app/data/models/cat_fact_model.dart';
+import 'package:cat_app/features/cat_app/data/models/cat_model.dart';
 import 'package:cat_app/features/cat_app/domain/entities/entities.dart';
 import 'package:http/http.dart' as http;
 
@@ -45,7 +47,7 @@ class CatAppRemoteDataSourceImpl implements CatAppRemoteDataSource {
       );
       final List<dynamic> newCats = jsonDecode(response.body) as List;
       final List<Cat> cats =
-          newCats.map((cat) => Cat.allCatFromJson(cat)).toList();
+          newCats.map((cat) => CatModel.allCatFromJson(cat)).toList();
       return cats;
     } on Exception {
       throw ServerException();
@@ -61,7 +63,7 @@ class CatAppRemoteDataSourceImpl implements CatAppRemoteDataSource {
       );
       final List<dynamic> favCats = jsonDecode(response.body) as List;
       final List<Cat> cats =
-          favCats.map((cat) => Cat.favCatFromJson(cat)).toList();
+          favCats.map((cat) => CatModel.favCatFromJson(cat)).toList();
       return cats;
     } on Exception {
       throw ServerException();
@@ -77,7 +79,7 @@ class CatAppRemoteDataSourceImpl implements CatAppRemoteDataSource {
       final List<dynamic> randomFacts =
           jsonDecode(response.body)['data'] as List;
       final List<CatFact> catFacts =
-          randomFacts.map((fact) => CatFact.fromMap(fact)).toList();
+          randomFacts.map((fact) => CatFactModel.fromMap(fact)).toList();
       return catFacts;
     } on Exception {
       throw ServerException();

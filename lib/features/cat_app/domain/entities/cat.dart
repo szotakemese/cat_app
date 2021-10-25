@@ -11,29 +11,6 @@ class Cat extends Equatable {
     this.isFav = false,
   });
 
-  factory Cat.allCatFromJson(Map<String, dynamic> json) => Cat(
-        id: json['id'],
-        url: json['url'],
-      );
-
-  factory Cat.favCatFromJson(Map<String, dynamic> json) => Cat(
-        id: json['image']['id'],
-        url: json['image']['url'],
-        isFav: true,
-      );
-
-  factory Cat.allCatsFromDB(Map<String, dynamic> dbData) => Cat(
-        id: dbData['id'],
-        url: dbData['url'],
-        isFav: dbData['isFav'] == 1,
-      );
-  
-  factory Cat.favCatsFromDB(Map<String, dynamic> dbData) => Cat(
-        id: dbData['id'],
-        url: dbData['url'],
-        isFav: true,
-      );
-
   Map<String, dynamic> toMap() {
     return {
       'id': id,

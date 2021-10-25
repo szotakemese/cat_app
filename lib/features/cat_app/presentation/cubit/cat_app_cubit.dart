@@ -1,7 +1,8 @@
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cat_app/core/error/failures.dart';
 import 'package:cat_app/core/usecases/usecase.dart';
+import 'package:cat_app/features/authentication/domain/entities/user.dart';
+import 'package:cat_app/features/cat_app/domain/entities/cat_app_status.dart';
 import 'package:cat_app/features/cat_app/domain/entities/entities.dart';
 import 'package:cat_app/features/cat_app/domain/usecases/usecases.dart';
 import 'package:dartz/dartz.dart';
@@ -150,10 +151,12 @@ class CatAppCubit extends Cubit<CatAppState> {
       currentCat.isFav = true;
       await updateCatInDB(UpdateCatInDBParams(cat: cat));
 
-      List<Cat> favourites = state.favourites;
+      List<Cat> favourites = [...state.favourites];
       favourites.add(currentCat);
 
-      emit(state.copyWith(favourites: favourites));
+      emit(state.copyWith(
+        favourites: favourites,
+      ));
     } catch (e) {
       print(e);
     }
@@ -162,7 +165,7 @@ class CatAppCubit extends Cubit<CatAppState> {
   Future<void> deleteFromFavs(Cat cat) async {
     try {
       List<Cat> cats = state.cats;
-      List<Cat> favourites = state.favourites;
+      List<Cat> favourites = [...state.favourites];
 
       final int catIndex = cats.indexWhere((element) => element.id == cat.id);
       if (catIndex != -1) {

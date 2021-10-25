@@ -9,11 +9,6 @@ class CatFact extends Equatable {
     required this.length,
   });
 
-  factory CatFact.fromMap(Map<String, dynamic> json) => CatFact(
-        fact: json['fact'],
-        length: json['length'],
-      );
-
   Map<String, dynamic> toMap() {
     return {
       'fact': fact,

@@ -15,11 +15,8 @@ class CatFactModel extends CatFact {
       length: json['length'],
     );
   }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'fact': fact,
-      'length': length,
-    };
-  }
+  factory CatFactModel.fromMap(Map<String, dynamic> json) => CatFactModel(
+        fact: json['fact'],
+        length: json['length'],
+      );
 }

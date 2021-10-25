@@ -1,4 +1,6 @@
 import 'package:cat_app/core/error/exceptions.dart';
+import 'package:cat_app/features/cat_app/data/models/cat_fact_model.dart';
+import 'package:cat_app/features/cat_app/data/models/cat_model.dart';
 import 'package:cat_app/features/cat_app/domain/entities/entities.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -78,7 +80,7 @@ class CatAppLocalDataSourceImpl implements CatAppLocalDataSource {
       );
 
       final List<Cat> catsList =
-          maps.map((cat) => Cat.allCatsFromDB(cat)).toList();
+          maps.map((cat) => CatModel.allCatsFromDB(cat)).toList();
 
       List<String> onlyId = [];
       catsList.forEach((e) => onlyId.add(e.id));
@@ -98,7 +100,7 @@ class CatAppLocalDataSourceImpl implements CatAppLocalDataSource {
           await db!.query('cats', where: 'isFav == 1');
 
       final List<Cat> catsList =
-          maps.map((cat) => Cat.favCatsFromDB(cat)).toList();
+          maps.map((cat) => CatModel.favCatsFromDB(cat)).toList();
 
       return catsList;
     } on Exception {
@@ -112,7 +114,7 @@ class CatAppLocalDataSourceImpl implements CatAppLocalDataSource {
       final List<Map<String, dynamic>> maps = await db!.query('facts');
 
       final List<CatFact> factsList =
-          maps.map((fact) => CatFact.fromMap(fact)).toList();
+          maps.map((fact) => CatFactModel.fromMap(fact)).toList();
 
       return factsList;
     } on Exception {
