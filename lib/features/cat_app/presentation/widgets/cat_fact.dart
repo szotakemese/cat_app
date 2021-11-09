@@ -8,7 +8,7 @@ class CatFactWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -21,10 +21,15 @@ class CatFactWidget extends StatelessWidget {
             ),
             textAlign: TextAlign.left,
           ),
-          Text(
-            state.facts[index].fact,
-            style: TextStyle(fontSize: 18),
-            textAlign: TextAlign.justify,
+          Container(
+            height:  MediaQuery.of(context).size.height * 0.15,
+            child: SingleChildScrollView(
+              child: Text(
+                state.facts[index].fact,
+                style: TextStyle(fontSize: 18),
+                textAlign: TextAlign.justify,
+              ),
+            ),
           ),
         ],
       ),

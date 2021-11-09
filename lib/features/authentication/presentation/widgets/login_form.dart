@@ -24,26 +24,24 @@ class LoginForm extends StatelessWidget {
             );
         }
       },
-      child: Align(
-        alignment: const Alignment(0, -1 / 3),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Login.',
-                style: TextStyle(
-                  fontSize: 50,
-                  fontWeight: FontWeight.w900,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              const SizedBox(height: 20.0),
-              GoogleLoginButton(),
-              const SizedBox(height: 8.0),
-              FacebookLoginButton(),
-            ],
-          ),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              "Continue with social media",
+              style: TextStyle(color: Colors.grey),
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            GoogleLoginButton(),
+            const SizedBox(height: 20.0),
+            FacebookLoginButton(),
+          ],
         ),
       ),
     );

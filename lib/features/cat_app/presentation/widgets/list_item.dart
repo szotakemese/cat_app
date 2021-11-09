@@ -26,28 +26,26 @@ class ListItem extends StatelessWidget {
     final String additionalTag = onCatsScreen ? 'cat' : 'fav';
 
     return Card(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15.0),
-        child: ListTile(
-            onTap: () =>
-                CatDetailRoute(catId: cat.id, onCatsScreen: onCatsScreen)
-                    .show(context),
-            leading: Container(
-              width: 60,
-              child: Hero(
-                tag: cat.id + additionalTag,
-                child: CachedNetworkImage(
-                  imageUrl: cat.url,
-                  errorWidget: (context, url, error) => new Icon(Icons.error),
-                ),
-              ),
+      child: ListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 18),
+        onTap: () => CatDetailRoute(catId: cat.id, onCatsScreen: onCatsScreen)
+            .show(context),
+        leading: Container(
+          width: 80,
+          child: Hero(
+            tag: cat.id + additionalTag,
+            child: CachedNetworkImage(
+              imageUrl: cat.url,
+              errorWidget: (context, url, error) => new Icon(Icons.error),
             ),
-            title: Text(cat.id),
-            trailing: LikeIcon(
-              cat: cat,
-              user: user,
-              state: state,
-            )),
+          ),
+        ),
+        title: Text(cat.id),
+        trailing: LikeIcon(
+          cat: cat,
+          user: user,
+          state: state,
+        ),
       ),
     );
   }

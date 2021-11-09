@@ -6,7 +6,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class FacebookLoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return ElevatedButton.icon(
       label: const Text(
         'SIGN IN WITH FACEBOOK',
@@ -17,7 +16,7 @@ class FacebookLoginButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),
-        primary: theme.colorScheme.secondary,
+        primary: Theme.of(context).colorScheme.primary,
         fixedSize: Size(240, 50),
       ),
       icon: const Icon(FontAwesomeIcons.facebook, color: Colors.white),

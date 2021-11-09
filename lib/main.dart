@@ -13,12 +13,11 @@ import 'features/authentication/domain/entities/auth_status.dart';
 import 'features/authentication/view/auth.dart';
 import 'injection_container.dart' as ic;
 
-
 void main() async {
   // Bloc.observer = AppBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  
+
   await ic.init();
   await ic.sl<AuthenticationRepository>().user.first;
 
@@ -39,8 +38,8 @@ class CatsApp extends StatelessWidget {
     return MaterialApp.router(
       theme: theme.copyWith(
         colorScheme: theme.colorScheme.copyWith(
-          primary: Colors.orange.shade400,
-          secondary: Colors.teal.shade800,
+          primary: Color(0xff006666),
+          secondary: Color(0xffddff99),
         ),
       ),
       routerDelegate: AutoRouterDelegate.declarative(

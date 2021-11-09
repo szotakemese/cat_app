@@ -24,7 +24,7 @@ class LogoutButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(30.0),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        primary: Theme.of(context).colorScheme.secondary,
+        primary: Theme.of(context).colorScheme.primary,
       ),
       icon: const Icon(Icons.exit_to_app, color: Colors.white),
       onPressed: () {

@@ -35,6 +35,7 @@ class HomeScreen extends StatelessWidget {
   BottomNavigationBar buildBottomNav(
       BuildContext context, TabsRouter tabsRouter) {
     return BottomNavigationBar(
+      backgroundColor: Colors.grey[300],
       currentIndex: tabsRouter.activeIndex,
       onTap: tabsRouter.setActiveIndex,
       items: [
